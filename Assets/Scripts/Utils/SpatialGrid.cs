@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.Utilities;
 using UnityEngine;
 
 [Serializable]
@@ -219,8 +218,10 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public IEnumerable<Point> GetIndices(Vector2 min, Vector2 max)
     {
-        min = min.Clamp(m_min, m_max);
-        max = max.Clamp(m_min, m_max);
+        min.x = Mathf.Clamp(min.x, m_min.x, m_max.x);
+        min.y = Mathf.Clamp(min.y, m_min.y, m_max.y);
+        max.x = Mathf.Clamp(max.x, m_min.x, m_max.x);
+        max.y = Mathf.Clamp(max.y, m_min.y, m_max.y);
 
         Point minIdx = GetCellIndex(min);
         Point maxIdx = GetCellIndex(max);
