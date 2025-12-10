@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -12,59 +13,62 @@ public class UIManager : MonoBehaviour
         UpgradeA,
         UpgradeB,
     }
-    
-    public GameObject TitleText;
-    public GameObject SelectText;
-    public TextMeshProUGUI SelectWeaponNameText;
-    public GameObject NoUpgradeText;
-    
-    public Button UpgradeButtonA;
-    public TextMeshProUGUI UpgradeButtonAText;
-    public Button UpgradeButtonB;
-    public TextMeshProUGUI UpgradeButtonBText;
-    public Button PassButton;
 
-    public SelectionResult Selection;
-    
-    private Canvas Canvas;
-    
+    [FormerlySerializedAs("TitleText")]  public GameObject titleText;
+    [FormerlySerializedAs("SelectText")] public GameObject selectText;
+
+    [FormerlySerializedAs("NoUpgradeText")]
+    public GameObject noUpgradeText;
+
+    public TextMeshProUGUI SelectWeaponNameText;
+
+    public Button          UpgradeButtonA;
+    public TextMeshProUGUI UpgradeButtonAText;
+    public Button          UpgradeButtonB;
+    public TextMeshProUGUI UpgradeButtonBText;
+    public Button          PassButton;
+
+    [FormerlySerializedAs("Selection")] public SelectionResult selection;
+
+    private Canvas _canvas;
+
     public void Start()
     {
-        Canvas = GameObject.FindObjectOfType<Canvas>();
+        _canvas = FindFirstObjectByType<Canvas>();
         HideAll();
     }
-    
+
     public void HideAll()
     {
-        TitleText.gameObject.SetActive(false);
-        SelectText.gameObject.SetActive(false);
+        titleText.SetActive(false);
+        selectText.SetActive(false);
         SelectWeaponNameText.gameObject.SetActive(false);
-        NoUpgradeText.gameObject.SetActive(false);
+        noUpgradeText.SetActive(false);
         UpgradeButtonA.gameObject.SetActive(false);
         UpgradeButtonB.gameObject.SetActive(false);
         PassButton.gameObject.SetActive(false);
 
-        Selection = SelectionResult.None;
+        selection = SelectionResult.None;
     }
 
     public void ShowTitle()
     {
-        TitleText.gameObject.SetActive(true);
+        titleText.gameObject.SetActive(true);
     }
-    
-    public void ShowSelectText(String weaponName)
+
+    public void ShowSelectText(string weaponName)
     {
-        SelectText.gameObject.SetActive(true);
+        selectText.gameObject.SetActive(true);
         SelectWeaponNameText.gameObject.SetActive(true);
         SelectWeaponNameText.text = weaponName;
     }
-    
+
     public void ShowNoUpgradeText()
     {
-        NoUpgradeText.gameObject.SetActive(false);
+        noUpgradeText.gameObject.SetActive(false);
     }
 
-    public void ShowButtons(String upgradeAText, String upgradeBText)
+    public void ShowButtons(string upgradeAText, string upgradeBText)
     {
         UpgradeButtonA.gameObject.SetActive(true);
         UpgradeButtonAText.text = upgradeAText;
@@ -75,16 +79,16 @@ public class UIManager : MonoBehaviour
 
     public void OnUpgradeA()
     {
-        Selection = SelectionResult.UpgradeA;
-    }   
-    
+        selection = SelectionResult.UpgradeA;
+    }
+
     public void OnUpgradeB()
     {
-        Selection = SelectionResult.UpgradeB;
+        selection = SelectionResult.UpgradeB;
     }
 
     public void OnPass()
     {
-        Selection = SelectionResult.Pass;
+        selection = SelectionResult.Pass;
     }
 }

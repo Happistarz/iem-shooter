@@ -9,7 +9,7 @@ public class CollisionComponent : MonoBehaviour
     
     public ActorComponent GetOwner()
     {
-        ActorComponent actorComponent = GetComponent<ActorComponent>();
+        var actorComponent = GetComponent<ActorComponent>();
         if (actorComponent != null)
             return actorComponent;
         
@@ -22,8 +22,8 @@ public class CollisionComponent : MonoBehaviour
     
     public Vector3 GetOverlapOffset(CollisionComponent other)
     {
-        Vector3 direction = new Vector3(other.transform.position.x - transform.position.x, 0, other.transform.position.z - transform.position.z);
-        float distance = direction.magnitude;
+        var direction = new Vector3(other.transform.position.x - transform.position.x, 0, other.transform.position.z - transform.position.z);
+        var distance = direction.magnitude;
         if (distance < Radius + other.Radius)
         {
             return -direction.normalized * (Radius + other.Radius - distance);
@@ -32,14 +32,14 @@ public class CollisionComponent : MonoBehaviour
         return Vector3.zero;
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         
-        Vector3[] points = new Vector3[32];
-        for (int i = 0; i < 32; i++)
+        var points = new Vector3[32];
+        for (var i = 0; i < 32; i++)
         {
-            float angle = i * Mathf.PI * 2 / 32;
+            var angle = i * Mathf.PI * 2 / 32;
             points[i] = transform.position + new Vector3(Mathf.Cos(angle) * Radius, 0, Mathf.Sin(angle) * Radius);
         }
         

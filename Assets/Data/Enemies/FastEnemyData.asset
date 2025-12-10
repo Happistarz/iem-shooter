@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db6e04892c164b3388ce2865b0a975dc, type: 3}
   m_Name: FastEnemyData
   m_EditorClassIdentifier: 
-  Name: Fast Enemeny
+  Name: Fast Enemy
   Prefab: {fileID: 3685143366263066905, guid: 600b124a7d12647408f5e14831929b67, type: 3}
   Threat: 1

@@ -2,22 +2,28 @@
 
 public class EnemyComponent : ActorComponent
 {
-    private MovementComponent m_movementComponent;
-    
+    private MovementComponent _movementComponent;
+    public  EnemyData         enemyData;
+
     public void Start()
     {
         Game.Enemies.Add(this);
-        m_movementComponent = GetComponent<MovementComponent>();
+        _movementComponent = GetComponent<MovementComponent>();
     }
-    
+
     public void Update()
     {
-        PlayerComponent player = GameObject.FindObjectOfType<PlayerComponent>();
-        Vector3 moveDirection = Vector3.zero;
+        var player        = FindFirstObjectByType<PlayerComponent>();
+        var moveDirection = Vector3.zero;
         if (player != null)
             moveDirection = (player.transform.position - transform.position).normalized;
-            
-        m_movementComponent.SetMovementDirection(moveDirection);
+
+        _movementComponent.SetMovementDirection(moveDirection);
+    }
+
+    protected override void OnDeath()
+    {
+        Game.GetEnemyPool(enemyData).Release(this);
     }
 
     private void OnDestroy()

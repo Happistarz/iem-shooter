@@ -1,42 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class PrefabPool
 {
-    List<GameObject> m_availableObjects;
-    List<GameObject> m_usedObjects;
+    private readonly List<GameObject> _availableObjects;
+    private readonly List<GameObject> _usedObjects;
 
-    private GameObject m_prefab;
+    public GameObject Prefab { get; }
 
-    public PrefabPool(GameObject prefab)
+    public PrefabPool(GameObject prefab, int min = 0, int max = 50)
     {
-        m_availableObjects = new List<GameObject>();
-        m_usedObjects = new List<GameObject>();
-        m_prefab = prefab;
+        _availableObjects = new List<GameObject>(min);
+        _usedObjects      = new List<GameObject>(max);
+        Prefab            = prefab;
     }
 
     public GameObject Get()
     {
-        if (m_availableObjects.Count == 0)
+        if (_availableObjects.Count == 0)
         {
-            GameObject newInstance = GameObject.Instantiate(m_prefab);
-            m_availableObjects.Add(newInstance);
+            var newInstance = Object.Instantiate(Prefab);
+            _availableObjects.Add(newInstance);
         }
 
-        GameObject instance = m_availableObjects.Last();
-        m_availableObjects.RemoveAt(m_availableObjects.Count - 1);
-        m_usedObjects.Add(instance);
+        var instance = _availableObjects.Last();
+        _availableObjects.RemoveAt(_availableObjects.Count - 1);
+        _usedObjects.Add(instance);
 
         instance.SetActive(true);
         return instance;
     }
+    
+    public T Get<T>() where T : MonoBehaviour
+    {
+        var gameObject = Get();
+        return gameObject.GetComponent<T>();
+    }
 
     public void Release(GameObject gameObject)
     {
-        m_availableObjects.Add(gameObject);
-        m_usedObjects.Remove(gameObject);
+        _availableObjects.Add(gameObject);
+        _usedObjects.Remove(gameObject);
 
         gameObject.SetActive(false);
     }
@@ -44,32 +50,32 @@ public class PrefabPool
 
 public class PrefabPool<T> where T : MonoBehaviour
 {
-    List<T> m_availableObjects;
-    List<T> m_usedObjects;
+    private readonly List<T> _availableObjects;
+    private readonly List<T> _usedObjects;
 
-    private T m_prefab;
-    private GameObject m_instanceRoot;
+    public T Prefab { get; }
+    private readonly GameObject _instanceRoot;
 
     public PrefabPool(GameObject instanceRoot, T prefab, int minInstanceCount = 0)
     {
-        m_availableObjects = new List<T>();
-        m_usedObjects = new List<T>();
+        _availableObjects = new List<T>();
+        _usedObjects      = new List<T>();
 
-        m_prefab = prefab;
-        m_instanceRoot = instanceRoot;
+        Prefab       = prefab;
+        _instanceRoot = instanceRoot;
 
-        for (int i = 0; i < minInstanceCount; i++)
+        for (var i = 0; i < minInstanceCount; i++)
             CreateInstance();
     }
 
     public T Get()
     {
-        if (m_availableObjects.Count == 0)
+        if (_availableObjects.Count == 0)
             CreateInstance();
 
-        T instance = m_availableObjects.Last();
-        m_availableObjects.RemoveAt(m_availableObjects.Count - 1);
-        m_usedObjects.Add(instance);
+        var instance = _availableObjects.Last();
+        _availableObjects.RemoveAt(_availableObjects.Count - 1);
+        _usedObjects.Add(instance);
 
         instance.gameObject.SetActive(true);
         return instance;
@@ -77,15 +83,15 @@ public class PrefabPool<T> where T : MonoBehaviour
 
     private void CreateInstance()
     {
-        T newInstance = GameObject.Instantiate(m_prefab, m_instanceRoot.transform);
+        var newInstance = Object.Instantiate(Prefab, _instanceRoot.transform);
         newInstance.gameObject.SetActive(false);
-        m_availableObjects.Add(newInstance);
+        _availableObjects.Add(newInstance);
     }
 
     public void Release(T instance)
     {
-        m_availableObjects.Add(instance);
-        m_usedObjects.Remove(instance);
+        _availableObjects.Add(instance);
+        _usedObjects.Remove(instance);
 
         instance.gameObject.SetActive(false);
     }

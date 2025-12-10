@@ -1,41 +1,46 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Weapons
 {
     public class BasicProjectileWeaponEffect : IWeaponEffect
     {
         public ActorComponent Owner { get; set; }
+        public event Action OnShoot;
 
-        private readonly BulletComponent m_prefab;
-        private readonly float m_speed;
-        private readonly float m_rateOfFire;
+        private readonly BulletComponent _prefab;
+        private readonly float _speed;
+        private readonly float _rateOfFire;
 
-        private float m_nextShotDelay = 0;
+        private float _nextShotDelay;
 
         public BasicProjectileWeaponEffect(BulletComponent prefab, float speed, float rateOfFire)
         {
-            m_prefab = prefab;
-            m_speed = speed;
-            m_rateOfFire = rateOfFire;
+            _prefab = prefab;
+            _speed = speed;
+            _rateOfFire = rateOfFire;
         }
 
         public void Update(Vector3 origin, Vector3 direction)
         {
-            float delayBetweenShots = 1.0f / m_rateOfFire;
-            m_nextShotDelay += Time.deltaTime;
-            if (m_nextShotDelay > delayBetweenShots && direction != Vector3.zero)
+            var delayBetweenShots = 1.0f / _rateOfFire;
+            _nextShotDelay += Time.deltaTime;
+            if (_nextShotDelay > delayBetweenShots && direction != Vector3.zero)
             {
                 Shoot(origin, direction);
-                m_nextShotDelay = 0;
+                _nextShotDelay = 0;
             }
         }
 
         private void Shoot(Vector3 origin, Vector3 direction)
         {
-            BulletComponent bullet = GameObject.Instantiate<BulletComponent>(m_prefab);
+            var bullet = Object.Instantiate(_prefab);
             bullet.transform.position = origin;
-            bullet.Velocity = direction * m_speed;
+            bullet.Velocity = direction * _speed;
             bullet.Owner = Owner;
+            
+            OnShoot?.Invoke();
         }
     }
 }

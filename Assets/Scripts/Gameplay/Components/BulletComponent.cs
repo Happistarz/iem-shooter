@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BulletComponent : ActorComponent
 {
@@ -16,15 +15,18 @@ public class BulletComponent : ActorComponent
     public void Update()
     {
         if (Time.time > SpawnTime + MaxDuration)
-            Destroy(gameObject);
-
+        {
+            OnDeath();
+            return;
+        }
+        
         transform.position += Time.deltaTime * Velocity;
 
-        CollisionComponent collision = gameObject.GetComponentInSelfOrChildren<CollisionComponent>();
-        IEnumerable<CollisionComponent> intersections = Game.CollisionSystem.GetIntersections(collision, CollisionType.Entity);
+        var collision     = gameObject.GetComponentInSelfOrChildren<CollisionComponent>();
+        var intersections = CollisionSystem.GetIntersections(collision, CollisionType.Entity);
         foreach (var otherCollision in intersections)
         {
-            Vector3 overlap = Game.CollisionSystem.Overlap(collision, otherCollision);
+            var overlap = CollisionSystem.Overlap(collision, otherCollision);
             if (overlap != Vector3.zero)
                 OnCollision(otherCollision);
         }
@@ -32,12 +34,15 @@ public class BulletComponent : ActorComponent
 
     private void OnCollision(CollisionComponent otherCollision)
     {
-        ActorComponent actor = otherCollision.GetOwner();
+        var actor = otherCollision.GetOwner();
 
-        if (actor != null && actor != Owner)
-        {
-            actor.ApplyDamage(1);
-            GameObject.Destroy(gameObject);
-        }
+        if (actor == null || actor == Owner) return;
+        actor.ApplyDamage(1);
+        OnDeath();
+    }
+    
+    protected override void OnDeath()
+    {
+        Game.BulletPrefabPool.Release(this);
     }
 }

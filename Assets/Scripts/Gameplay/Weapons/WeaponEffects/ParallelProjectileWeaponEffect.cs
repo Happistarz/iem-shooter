@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Weapons
 {
     public class ParallelProjectileWeaponEffect : IWeaponEffect
     {
         public ActorComponent Owner { get; set; }
+        public event Action OnShoot;
 
         public const float Offset = 0.45f;
 
@@ -13,7 +16,7 @@ namespace Weapons
         private readonly float m_speed;
         private readonly float m_rateOfFire;
 
-        private float m_nextShotDelay = 0;
+        private float m_nextShotDelay;
 
         public ParallelProjectileWeaponEffect(BulletComponent prefab, int multiShotCount, float speed, float rateOfFire)
         {
@@ -25,7 +28,7 @@ namespace Weapons
 
         public void Update(Vector3 origin, Vector3 direction)
         {
-            float delayBetweenShots = 1.0f / m_rateOfFire;
+            var delayBetweenShots = 1.0f / m_rateOfFire;
             m_nextShotDelay += Time.deltaTime;
             if (m_nextShotDelay > delayBetweenShots && direction != Vector3.zero)
             {
@@ -36,21 +39,23 @@ namespace Weapons
 
         private void Shoot(Vector3 origin, Vector3 direction)
         {
-            Vector3 sideDirection = Vector3.Cross(Vector3.up, direction);
-            float minOffset = Offset * m_multiShotCount / 2;
-            float maxOffset = -minOffset;
+            var sideDirection = Vector3.Cross(Vector3.up, direction);
+            var minOffset = Offset * m_multiShotCount / 2;
+            var maxOffset = -minOffset;
 
-            for (int i = 0; i < m_multiShotCount; i++)
+            for (var i = 0; i < m_multiShotCount; i++)
             {
                 float offset = 0;
                 if (m_multiShotCount > 1)
                     offset = minOffset + (maxOffset - minOffset) * i / (float)(m_multiShotCount - 1);
 
-                BulletComponent bullet = GameObject.Instantiate<BulletComponent>(m_prefab);
+                var bullet = Object.Instantiate(m_prefab);
                 bullet.transform.position = origin + offset * sideDirection;
                 bullet.Velocity = direction * m_speed;
                 bullet.Owner = Owner;
             }
+            
+            OnShoot?.Invoke();
         }
     }
 }

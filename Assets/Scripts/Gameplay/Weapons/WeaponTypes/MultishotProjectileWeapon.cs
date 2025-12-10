@@ -11,6 +11,7 @@ namespace Weapons
         {
             Parallel,
             Arc,
+            Spike
         }
 
         public BulletComponent BulletPrefab;
@@ -22,15 +23,14 @@ namespace Weapons
 
         public override IWeaponEffect GetWeaponEffect()
         {
-            switch (MultiShot)
+            return MultiShot switch
             {
-                case MultiShotType.Parallel:
-                    return new ParallelProjectileWeaponEffect(BulletPrefab, MultiShotCount, Speed, RateOfFire);
-                case MultiShotType.Arc:
-                    return new ArcProjectileWeaponEffect(BulletPrefab, MultiShotCount, Speed, RateOfFire);
-            }
-
-            throw new NotImplementedException();
+                MultiShotType.Parallel => new ParallelProjectileWeaponEffect(
+                    BulletPrefab, MultiShotCount, Speed, RateOfFire),
+                MultiShotType.Arc   => new ArcProjectileWeaponEffect(BulletPrefab, MultiShotCount, Speed, RateOfFire),
+                MultiShotType.Spike => new SpikeWeaponEffect(BulletPrefab, MultiShotCount, Speed, RateOfFire),
+                _                   => throw new NotImplementedException()
+            };
         }
     }
 }

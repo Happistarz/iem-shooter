@@ -1,62 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Weapons;
+using Object = UnityEngine.Object;
 
 public class RainbowPulseWeaponEffect : IWeaponEffect
 {
     public ActorComponent Owner { get; set; }
+    public event Action   OnShoot;
 
-    private readonly BulletComponent m_prefab;
-    private readonly float m_bulletSpeed;
-    private readonly float m_rateOfFire;
-    private readonly float m_rotationSpeed;
-    private readonly float m_gradientDuration;
-    private readonly Gradient m_gradient;
+    private readonly BulletComponent _prefab;
+    private readonly float           _bulletSpeed;
+    private readonly float           _rateOfFire;
+    private readonly float           _rotationSpeed;
+    private readonly float           _gradientDuration;
+    private readonly Gradient        _gradient;
 
-    private float m_nextShotDelay = 0;
+    private float _nextShotDelay;
 
-    public RainbowPulseWeaponEffect(BulletComponent prefab, float bulletSpeed, float rateOfFire, float rotationSpeed, Gradient gradient, float gradientDuration)
+    public RainbowPulseWeaponEffect(BulletComponent prefab,   float bulletSpeed, float rateOfFire, float rotationSpeed,
+                                    Gradient        gradient, float gradientDuration)
     {
-        m_prefab = prefab;
-        m_bulletSpeed = bulletSpeed;
-        m_rateOfFire = rateOfFire;
-        m_rotationSpeed = rotationSpeed;
-        m_gradient = gradient;
-        m_gradientDuration = gradientDuration;
+        _prefab           = prefab;
+        _bulletSpeed      = bulletSpeed;
+        _rateOfFire       = rateOfFire;
+        _rotationSpeed    = rotationSpeed;
+        _gradient         = gradient;
+        _gradientDuration = gradientDuration;
     }
 
     public void Update(Vector3 origin, Vector3 direction)
     {
-        float delayBetweenShots = 1.0f / m_rateOfFire;
-        m_nextShotDelay += Time.deltaTime;
-        if (m_nextShotDelay > delayBetweenShots)
-        {
-            float angle = Time.time * m_rotationSpeed;
-            Vector3 shootDirection = Rotate(Vector3.forward, angle);
+        var delayBetweenShots = 1.0f / _rateOfFire;
+        _nextShotDelay += Time.deltaTime;
+        if (!(_nextShotDelay > delayBetweenShots)) return;
 
-            BulletComponent bullet = GameObject.Instantiate<BulletComponent>(m_prefab);
-            bullet.transform.position = origin;
-            bullet.Velocity = shootDirection * m_bulletSpeed;
-            bullet.Owner = Owner;
-            
-            //Change projectile size
-            bullet.transform.localScale *= 2;
+        var angle          = Time.time * _rotationSpeed;
+        var shootDirection = Rotate(Vector3.forward, angle);
 
-            //Add color variations
-            var colorGradientCmp = bullet.AddComponent<ColorGradientComponent>();
-            colorGradientCmp.Gradient = m_gradient;
-            colorGradientCmp.Duration = m_gradientDuration;
-            colorGradientCmp.TimeOffset = angle;
+        var bullet = Object.Instantiate(_prefab);
+        bullet.transform.position = origin;
+        bullet.Velocity           = shootDirection * _bulletSpeed;
+        bullet.Owner              = Owner;
 
-            m_nextShotDelay = 0;
-        }
+        //Change projectile size
+        bullet.transform.localScale *= 2;
+
+        //Add color variations
+        var colorGradientCmp = bullet.AddComponent<ColorGradientComponent>();
+        colorGradientCmp.Gradient   = _gradient;
+        colorGradientCmp.Duration   = _gradientDuration;
+        colorGradientCmp.TimeOffset = angle;
+
+        _nextShotDelay = 0;
+        OnShoot?.Invoke();
     }
 
-    public Vector3 Rotate(Vector3 v, float angleRadians)
+    private static Vector3 Rotate(Vector3 v, float angleRadians)
     {
-        Quaternion q = Quaternion.AngleAxis(Mathf.Rad2Deg * angleRadians, Vector3.up);
+        var q = Quaternion.AngleAxis(Mathf.Rad2Deg * angleRadians, Vector3.up);
         return q * v;
     }
 }

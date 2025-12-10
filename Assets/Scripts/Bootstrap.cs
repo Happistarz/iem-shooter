@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameApp
+public static class GameApp
 {
     [RuntimeInitializeOnLoadMethod]
-    static void Bootstrap()
+    private static void Bootstrap()
     {
         var gameAppObject = new GameObject("Game");
         gameAppObject.AddComponent<GameAppComponent>();
