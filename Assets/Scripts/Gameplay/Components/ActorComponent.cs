@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ActorComponent : MonoBehaviour
 {
-    public int Health = 1;
-    public bool CanTakeDamage;
-    
+    [FormerlySerializedAs("Health")] public int health = 1;
+
+    [FormerlySerializedAs("CanTakeDamage")]
+    public bool canTakeDamage;
+
     public void ApplyDamage(int damage)
     {
-        if (!CanTakeDamage) return;
+        if (!canTakeDamage) return;
+
+        health -= damage;
+        if (health > 0) return;
         
-        Health -= damage;
-        if (Health <= 0)
-        {
-            Destroy(gameObject);
-        }
+        OnDeath();
+    }
+
+    protected virtual void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

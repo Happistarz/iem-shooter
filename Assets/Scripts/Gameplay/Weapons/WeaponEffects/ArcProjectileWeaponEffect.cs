@@ -1,51 +1,58 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Weapons
 {
     public class ArcProjectileWeaponEffect : IWeaponEffect
     {
         public ActorComponent Owner { get; set; }
+        public event Action   OnShoot;
 
-        private readonly BulletComponent m_prefab;
-        private readonly int m_multiShotCount;
-        private readonly float m_speed;
-        private readonly float m_rateOfFire;
+        private readonly BulletComponent _prefab;
+        private readonly int             _multiShotCount;
+        private readonly float           _speed;
+        private readonly float           _rateOfFire;
 
-        private float m_nextShotDelay = 0;
+        private float _nextShotDelay;
 
         public ArcProjectileWeaponEffect(BulletComponent prefab, int multiShotCount, float speed, float rateOfFire)
         {
-            m_prefab = prefab;
-            m_multiShotCount = multiShotCount;
-            m_speed = speed;
-            m_rateOfFire = rateOfFire;
+            _prefab         = prefab;
+            _multiShotCount = multiShotCount;
+            _speed          = speed;
+            _rateOfFire     = rateOfFire;
         }
 
         public void Update(Vector3 origin, Vector3 direction)
         {
-            float delayBetweenShots = 1.0f / m_rateOfFire;
-            m_nextShotDelay += Time.deltaTime;
-            if (m_nextShotDelay > delayBetweenShots && direction != Vector3.zero)
-            {
-                Shoot(origin, direction);
-                m_nextShotDelay = 0;
-            }
+            var delayBetweenShots = 1.0f / _rateOfFire;
+            _nextShotDelay += Time.deltaTime;
+            if (!(_nextShotDelay > delayBetweenShots) || direction == Vector3.zero) return;
+
+            Shoot(origin, direction);
+            _nextShotDelay = 0;
         }
 
         private void Shoot(Vector3 origin, Vector3 direction)
         {
-            float arcAngle = 20;
-            float angleOffset = arcAngle / (m_multiShotCount + 1);
-            float angle = -0.5f * arcAngle + angleOffset;
+            const float ARC_ANGLE = 20;
 
-            for (int i = 0; i < m_multiShotCount; i++)
+            var angleOffset = ARC_ANGLE / (_multiShotCount + 1);
+            var angle       = -0.5f * ARC_ANGLE + angleOffset;
+
+            for (var i = 0; i < _multiShotCount; i++)
             {
-                BulletComponent bullet = GameObject.Instantiate<BulletComponent>(m_prefab);
+                var bullet = Object.Instantiate(_prefab);
                 bullet.transform.position = origin;
-                bullet.Velocity = Quaternion.AngleAxis(angle, Vector3.up) * direction * m_speed;
-                bullet.Owner = Owner;
-                angle += angleOffset;
+
+                bullet.Velocity = Quaternion.AngleAxis(angle, Vector3.up) * direction * _speed;
+
+                bullet.Owner =  Owner;
+                angle        += angleOffset;
             }
+
+            OnShoot?.Invoke();
         }
     }
 }

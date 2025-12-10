@@ -1,125 +1,171 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameLoop : MonoBehaviour
 {
     //Wave state
-    public int CurrentWaveIndex;
-    public WaveParameters.Wave CurrentWave;
-    public float WaveTimer;
-    public bool IsPauseActive;
+    [FormerlySerializedAs("CurrentWaveIndex")]
+    public int currentWaveIndex;
+
+    [FormerlySerializedAs("CurrentWave")] public WaveParameters.Wave currentWave;
+    [FormerlySerializedAs("WaveTimer")]   public float               waveTimer;
+
+    [FormerlySerializedAs("IsPauseActive")]
+    public bool isPauseActive;
 
     //Game data
-    private WaveParameters m_waveParameters;
+    private WaveParameters _waveParameters;
 
     //current wave data 
-    private Dictionary<WaveParameters.WavePart, EnemyData> m_selectedEnemies;
-    private Dictionary<WaveParameters.WavePart, float> m_enemiesSpawnTimers;
+    private Dictionary<WaveParameters.WavePart, List<EnemyData>> _availableEnemies;
+    private Dictionary<WaveParameters.WavePart, float>           _enemiesSpawnTimers;
 
     //References
-    private UIManager m_uiManager;
-    private PlayerComponent m_player;
+    private UIManager       _uiManager;
+    private PlayerComponent _player;
 
     //Utils
-    private System.Random m_random;
+    private System.Random _random;
 
     public void Init()
     {
-        m_waveParameters = Game.Data.WaveParameters;
+        _waveParameters = Game.Data.WaveParameters;
 
-        m_random = new System.Random();
+        _random = new System.Random();
 
         //Initialise Player
-        var playerStart = GameObject.FindObjectOfType<PlayerStartLocation>();
-        Vector3 startLocation = Vector3.zero;
+        var playerStart   = FindFirstObjectByType<PlayerStartLocation>();
+        var startLocation = Vector3.zero;
         if (playerStart != null)
             startLocation = playerStart.transform.position;
-        m_player = GameObject.Instantiate(Game.Data.PlayerPrefab);
-        m_player.transform.position = startLocation;
-        Game.Player = m_player;
+        _player                    = Instantiate(Game.Data.PlayerPrefab);
+        _player.transform.position = startLocation;
+        Game.Player                = _player;
 
         //Start the game
         StartWave(0);
-        IsPauseActive = false;
+        isPauseActive = false;
+
+        //Initialize prefab pools
+        foreach (var enemyData in Game.Data.Enemies)
+        {
+            var poolHolder = new GameObject($"Pool_{enemyData.Prefab.name}");
+            Game.ENEMY_PREFAB_POOLS.Add(
+                enemyData,
+                new PrefabPool<EnemyComponent>(
+                    poolHolder,
+                    enemyData.Prefab,
+                    minInstanceCount: 200));
+        }
+
+        //Initialize bullet pool
+        var bulletPoolHolder = new GameObject("Pool_Bullets");
+        Game.BulletPrefabPool = new PrefabPool<BulletComponent>(
+            bulletPoolHolder,
+            Game.Data.BulletPrefab,
+            minInstanceCount: 200);
     }
 
     public void Update()
     {
-        if (IsPauseActive) return;
+        if (isPauseActive) return;
         
         Game.CollisionSystem.UpdateGrid();
 
-        WaveTimer += Time.deltaTime;
-        foreach (var wavePart in m_enemiesSpawnTimers.Keys.ToList())
+        waveTimer += Time.deltaTime;
+        foreach (var wavePart in _enemiesSpawnTimers.Keys.ToList())
         {
-            m_enemiesSpawnTimers[wavePart] += Time.deltaTime;
+            _enemiesSpawnTimers[wavePart] += Time.deltaTime;
 
-            var spawnDelay = m_waveParameters.WaveDuration / wavePart.Count / Game.Data.SpawnMultiplier;
-            if (m_enemiesSpawnTimers[wavePart] > spawnDelay)
-            {
-                SpawnEnemy(m_selectedEnemies[wavePart]);
-                m_enemiesSpawnTimers[wavePart] -= spawnDelay;
-            }
+            var spawnDelay = _waveParameters.WaveDuration / wavePart.Count / Game.Data.SpawnMultiplier;
+            if (!(_enemiesSpawnTimers[wavePart] > spawnDelay)) continue;
+
+            var enemyToSpawn = SelectRandomEnemy(_availableEnemies[wavePart]);
+            SpawnEnemy(enemyToSpawn);
+            _enemiesSpawnTimers[wavePart] -= spawnDelay;
         }
 
-        if (WaveTimer > m_waveParameters.WaveDuration)
+        if (waveTimer > _waveParameters.WaveDuration)
         {
-            StartCoroutine("MoveToNextWaveCoroutine");
+            StartCoroutine(nameof(MoveToNextWaveCoroutine));
         }
     }
 
-    void StartWave(int index)
+    private void StartWave(int index)
     {
-        CurrentWaveIndex = index;
-        if (CurrentWaveIndex >= m_waveParameters.Waves.Count)
-            CurrentWaveIndex = m_waveParameters.Waves.Count - 1;
-        CurrentWave = m_waveParameters.Waves[CurrentWaveIndex];
+        currentWaveIndex = index;
+        if (currentWaveIndex >= _waveParameters.Waves.Count)
+            currentWaveIndex = _waveParameters.Waves.Count - 1;
+        currentWave = _waveParameters.Waves[currentWaveIndex];
 
-        m_selectedEnemies = new Dictionary<WaveParameters.WavePart, EnemyData>();
-        m_enemiesSpawnTimers = new Dictionary<WaveParameters.WavePart, float>();
-        foreach (var wavePart in CurrentWave.Parts)
+        _availableEnemies   = new Dictionary<WaveParameters.WavePart, List<EnemyData>>();
+        _enemiesSpawnTimers = new Dictionary<WaveParameters.WavePart, float>();
+        foreach (var wavePart in currentWave.Parts)
         {
             var enemiesAtThreat = Game.Data.Enemies.Where(e => e.Threat == wavePart.Threat).ToList();
-            if (enemiesAtThreat.Count > 0)
-            {
-                var enemy = enemiesAtThreat[m_random.Next(0, enemiesAtThreat.Count)];
-                m_selectedEnemies[wavePart] = enemy;
-                m_enemiesSpawnTimers[wavePart] = 0;
-            }
+            if (enemiesAtThreat.Count <= 0) continue;
+
+            _availableEnemies[wavePart]   = enemiesAtThreat;
+            _enemiesSpawnTimers[wavePart] = 0;
         }
 
-        WaveTimer = 0;
+        waveTimer = 0;
     }
 
-    void SpawnEnemy(EnemyData enemyData)
+    private EnemyData SelectRandomEnemy(List<EnemyData> enemies)
     {
-        var spawnLocations = GameObject.FindObjectsOfType<SpawnLocationComponent>();
-        var spawner = spawnLocations[m_random.Next(0, spawnLocations.Length)];
-        EnemyComponent enemy = GameObject.Instantiate(enemyData.Prefab);
+        // Calcule le poids total
+        var totalWeight = enemies.Sum(enemy => enemy.Rarity);
+
+        // Sélection pondérée
+        var randomValue   = _random.Next(0, totalWeight);
+        var currentWeight = 0;
+
+        foreach (var enemy in enemies)
+        {
+            currentWeight += enemy.Rarity;
+            if (randomValue < currentWeight)
+                return enemy;
+        }
+
+        return enemies[0];
+    }
+
+    private void SpawnEnemy(EnemyData enemyData)
+    {
+        var spawnLocations = FindObjectsByType<SpawnLocationComponent>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        var spawner = spawnLocations[_random.Next(0, spawnLocations.Length)];
+        var enemy = Game.ENEMY_PREFAB_POOLS[enemyData].Get();
+
+        enemy.enemyData          = enemyData;
         enemy.transform.position = spawner.transform.position;
+        enemy.health             = enemyData.Health;
     }
 
-    IEnumerator MoveToNextWaveCoroutine()
+    private IEnumerator MoveToNextWaveCoroutine()
     {
-        IsPauseActive = true;
+        isPauseActive = true;
 
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(0.5f);
 
-        m_uiManager = GameObject.FindObjectOfType<UIManager>();
-        m_uiManager.ShowTitle();
+        _uiManager = FindFirstObjectByType<UIManager>();
+        _uiManager.ShowTitle();
         yield return new WaitForSecondsRealtime(0.5f);
 
-        m_uiManager.ShowNoUpgradeText();
+        _uiManager.ShowNoUpgradeText();
         yield return new WaitForSecondsRealtime(2.0f);
 
-        m_uiManager.HideAll();
+        _uiManager.HideAll();
 
         Time.timeScale = 1;
-        StartWave(CurrentWaveIndex + 1);
-        IsPauseActive = false;
+        StartWave(currentWaveIndex + 1);
+        isPauseActive = false;
     }
 }

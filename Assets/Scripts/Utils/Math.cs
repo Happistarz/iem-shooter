@@ -12,7 +12,7 @@
 
     public static float Smooth(float u)
     {
-        return Math.Lerp(
+        return Lerp(
             u * u * u,
             1 - (1 - u) * (1 - u) * (1 - u),
             u);
@@ -32,8 +32,8 @@
 
     public static float PingPong(float t)
     {
-        float u = t % 1.0f;
-        int n = ((int)t);
+        var u = t % 1.0f;
+        var n = ((int)t);
         if (n % 2 == 0) return u;
         else return 1 - u;
     }
@@ -53,7 +53,7 @@
     {
         if (t < inMin) return outMin;
         if (t > inMax) return outMax;
-        float map = Map(inMin, inMax, outMin, outMax, t);
+        var map = Map(inMin, inMax, outMin, outMax, t);
         return map;
     }
 
@@ -64,7 +64,7 @@
 
     public static float MapFromClamped(float inMin, float inMax, float t)
     {
-        return Math.Clamp01(Map(inMin, inMax, 0, 1, t));
+        return Clamp01(Map(inMin, inMax, 0, 1, t));
     }
 
     public static float MapTo(float outMin, float outMax, float u)
@@ -92,19 +92,19 @@
 
     public static float Cos(float u)
     {
-        double rad = u * 2 * System.Math.PI;
+        var rad = u * 2 * System.Math.PI;
         return 0.5f + 0.5f * (float)System.Math.Cos(rad);
     }
 
     public static float Sin(float u)
     {
-        double rad = u * 2 * System.Math.PI;
+        var rad = u * 2 * System.Math.PI;
         return 0.5f + 0.5f * (float)System.Math.Sin(rad);
     }
 
     public static float Wave(float period, float t)
     {
-        double rad = t / period * 2 * System.Math.PI;
+        var rad = t / period * 2 * System.Math.PI;
         return 0.5f + 0.5f * (float)System.Math.Sin(rad);
     }
 
@@ -135,13 +135,13 @@
 
     public static float BellFallout(float deviaton, float value)
     {
-        float k = value / deviaton;
+        var k = value / deviaton;
         return (float)System.Math.Pow(0.5f, k * k);
     }
 
     public static float ExponentialTransition(float from, float to, float halfLife, float deltaTime)
     {
-        float k = (float)System.Math.Pow(0.5f, deltaTime / halfLife);
+        var k = (float)System.Math.Pow(0.5f, deltaTime / halfLife);
         return to + (from - to) * k;
     }
 
@@ -157,15 +157,15 @@
 
     public static float FadeOutInside(float start, float end, float fadeDistance, float t)
     {
-        float dist = System.Math.Min(t - start, end - t);
+        var dist = System.Math.Min(t - start, end - t);
         return SmoothStep(0, fadeDistance, dist);
     }
 
     public static float FadeOutOutside(float start, float end, float fadeDistance, float t)
     {
-        bool inside = t > start && t < end;
+        var inside = t > start && t < end;
         if (inside) return 1;
-        float dist = System.Math.Max(start - t, t - end);
+        var dist = System.Math.Max(start - t, t - end);
         return 1 - SmoothStep(0, fadeDistance, dist);
     }
 

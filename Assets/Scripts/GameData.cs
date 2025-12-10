@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Weapons;
 
@@ -16,6 +15,8 @@ public class GameData : ScriptableObject
 
     public AWeaponType StartingWeapon;
     public List<EnemyData> Enemies;
+    
+    public BulletComponent BulletPrefab;
 
     public void FindAllEnemies()
     {

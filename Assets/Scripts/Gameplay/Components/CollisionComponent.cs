@@ -6,9 +6,10 @@ public class CollisionComponent : MonoBehaviour
     public CollisionType Type;
     public float Radius;
     
+    
     public ActorComponent GetOwner()
     {
-        ActorComponent actorComponent = GetComponent<ActorComponent>();
+        var actorComponent = GetComponent<ActorComponent>();
         if (actorComponent != null)
             return actorComponent;
         
@@ -23,10 +24,10 @@ public class CollisionComponent : MonoBehaviour
     {
         Gizmos.color = Color.red;
         
-        Vector3[] points = new Vector3[32];
-        for (int i = 0; i < 32; i++)
+        var points = new Vector3[32];
+        for (var i = 0; i < 32; i++)
         {
-            float angle = i * Mathf.PI * 2 / 32;
+            var angle = i * Mathf.PI * 2 / 32;
             points[i] = transform.position + new Vector3(Mathf.Cos(angle) * Radius, 0, Mathf.Sin(angle) * Radius);
         }
         

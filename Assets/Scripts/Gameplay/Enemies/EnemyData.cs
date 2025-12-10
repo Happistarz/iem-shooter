@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Enemy Data")]
 public class EnemyData : ScriptableObject
@@ -9,7 +8,12 @@ public class EnemyData : ScriptableObject
         Simple, Medium, Advanced, Boss
     }
     
-    public String Name;
+    public string Name;
     public EnemyComponent Prefab;
     public ThreatLevel Threat;
+    
+    [Range(1, 10)]
+    public int Rarity = 5;
+
+    public int Health = 1;
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class Extensions
 {
@@ -11,7 +9,7 @@ public static class Extensions
     
     public static T GetComponentInSelfOrChildren<T>(this GameObject gameObject) where T : Component
     {
-        T component = gameObject.GetComponent<T>();
+        var component = gameObject.GetComponent<T>();
         if (component != null)
         {
             return component;

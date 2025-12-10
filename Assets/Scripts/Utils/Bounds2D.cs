@@ -56,7 +56,7 @@ public struct Bounds2D
 
     public bool Intersects(Bounds2D bounds)
     {
-        return Bounds2D.Intersects(this, bounds);
+        return Intersects(this, bounds);
     }
 
     public bool Contains(Vector2 pos)

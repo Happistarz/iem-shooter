@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 public class GameAppComponent : MonoBehaviour
 {
-    private GameLoop m_gameLoop;
+    private GameLoop _gameLoop;
     
     public void Start()
     {
@@ -24,12 +21,12 @@ public class GameAppComponent : MonoBehaviour
         Game.CollisionSystem = new CollisionSystem(Game.Data.GridExtent, Game.Data.GridCellCount);
 
         var gameLoopObject = new GameObject("GameLoop");
-        m_gameLoop = gameLoopObject.AddComponent<GameLoop>();
-        m_gameLoop.Init();
+        _gameLoop = gameLoopObject.AddComponent<GameLoop>();
+        _gameLoop.Init();
     }
-    
-    void Update()
+
+    private void Update()
     {
-        m_gameLoop.Update();
+        _gameLoop.Update();
     }
 }

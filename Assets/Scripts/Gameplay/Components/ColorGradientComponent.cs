@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ColorGradientComponent : MonoBehaviour
 {
@@ -10,13 +8,12 @@ public class ColorGradientComponent : MonoBehaviour
 
     public void Update()
     {
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-        if (renderer != null)
-        {
-            var gradientTime = ((Time.time + TimeOffset)) % Duration / (Duration);
+        var renderer = GetComponent<MeshRenderer>();
+        if (renderer == null) return;
+        
+        var gradientTime = ((Time.time + TimeOffset)) % Duration / (Duration);
 
-            var material = renderer.material;
-            material.color = Gradient.Evaluate(gradientTime);
-        }
+        var material = renderer.material;
+        material.color = Gradient.Evaluate(gradientTime);
     }
 }
