@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905795293d3f48639e468a40c930c119, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  GridExtent: 500
-  GridCellCount: 250
-  SpawnMultiplier: 5
+  GridExtent: 250
+  GridCellCount: 50
+  SpawnMultiplier: 25
   WaveParameters: {fileID: 11400000, guid: 386cd8cd81a5c6d488c7579254e43732, type: 2}
   PlayerPrefab: {fileID: 4625316065689298885, guid: 88d3a98fbe68dff4ba736bb761aadfc3, type: 3}
   StartingWeapon: {fileID: 11400000, guid: 2aa339ef868278b4191e985161aaa5f9, type: 2}

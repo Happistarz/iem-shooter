@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.AddressableAssets.Build.Layout;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -21,17 +22,31 @@ public class CollisionSystem
 
     public void UpdateGrid()
     {
-        foreach (var index in CollisionGrid.Indices)
+        Profiler.BeginSample("Rebuild the collision grid");
+
+        Profiler.BeginSample("Clear existing data");
+        for (int i = 0; i < CollisionGrid.Data.Length; i++)
         {
-            CollisionGrid[index].Clear();
+            CollisionGrid.Data[i].Clear();
         }
 
+        Profiler.EndSample();
+
+        Profiler.BeginSample("Get all composition components");
         CollisionComponent[] allCollisions = GameObject.FindObjectsOfType<CollisionComponent>();
+        Profiler.EndSample();
+
+        Profiler.BeginSample("Register coliisions in the grid");
         foreach (var collisionCmp in allCollisions)
         {
             var collisionPosition = new Vector2(collisionCmp.transform.position.x, collisionCmp.transform.position.z);
-            CollisionGrid[collisionPosition].Add(collisionCmp);
+            if (CollisionGrid.Contains(collisionPosition))
+                CollisionGrid[collisionPosition].Add(collisionCmp);
         }
+
+        Profiler.EndSample();
+
+        Profiler.EndSample();
     }
 
     public IEnumerable<CollisionComponent> GetIntersections(CollisionComponent collision, CollisionType type)
@@ -66,7 +81,7 @@ public class CollisionSystem
             c2.transform.position.z - c1.transform.position.z);
         float distance = separation.magnitude;
         Profiler.EndSample();
-        
+
         return distance < c1.Radius + c2.Radius;
     }
 
