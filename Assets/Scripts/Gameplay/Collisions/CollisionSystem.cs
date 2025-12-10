@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using UnityEditor.AddressableAssets.Build.Layout;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Profiling;
 
 public class CollisionSystem
 {
-    public SpatialGrid<List<CollisionComponent>> CollisionGrid;
+    public readonly SpatialGrid<List<CollisionComponent>> CollisionGrid;
 
     public CollisionSystem(float extent, int cellCount)
     {
@@ -25,18 +23,18 @@ public class CollisionSystem
         Profiler.BeginSample("Rebuild the collision grid");
 
         Profiler.BeginSample("Clear existing data");
-        for (int i = 0; i < CollisionGrid.Data.Length; i++)
+        foreach (var data in CollisionGrid.Data)
         {
-            CollisionGrid.Data[i].Clear();
+            data.Clear();
         }
 
         Profiler.EndSample();
 
         Profiler.BeginSample("Get all composition components");
-        CollisionComponent[] allCollisions = GameObject.FindObjectsOfType<CollisionComponent>();
+        var allCollisions = Object.FindObjectsByType<CollisionComponent>(FindObjectsSortMode.None);
         Profiler.EndSample();
 
-        Profiler.BeginSample("Register coliisions in the grid");
+        Profiler.BeginSample("Register collisions in the grid");
         foreach (var collisionCmp in allCollisions)
         {
             var collisionPosition = new Vector2(collisionCmp.transform.position.x, collisionCmp.transform.position.z);
@@ -51,18 +49,21 @@ public class CollisionSystem
 
     public IEnumerable<CollisionComponent> GetIntersections(CollisionComponent collision, CollisionType type)
     {
-        float maxOtherCollisionRadius = 2;
-        var collisions = new List<CollisionComponent>();
+        const float MAX_OTHER_COLLISION_RADIUS = 2;
+        
+        var         collisions              = new List<CollisionComponent>();
+
+        if (collision == null) return collisions;
 
         var collisionPosition = new Vector2(collision.transform.position.x, collision.transform.position.z);
-        Vector2 collisionMin = collisionPosition - Vector2.one * (maxOtherCollisionRadius + collision.Radius);
-        Vector2 collisionMax = collisionPosition + Vector2.one * (maxOtherCollisionRadius + collision.Radius);
+        var collisionMin = collisionPosition - Vector2.one * (MAX_OTHER_COLLISION_RADIUS + collision.Radius);
+        var collisionMax = collisionPosition + Vector2.one * (MAX_OTHER_COLLISION_RADIUS + collision.Radius);
         var intersectingIndices = CollisionGrid.GetIndices(collisionMin, collisionMax);
         foreach (var index in intersectingIndices)
         {
             foreach (var otherCollision in CollisionGrid[index])
             {
-                if (collision == otherCollision) continue;
+                if (otherCollision == null || collision == otherCollision) continue;
                 if (otherCollision.Type != type) continue;
 
                 if (Intersection(collision, otherCollision))
@@ -73,24 +74,28 @@ public class CollisionSystem
         return collisions;
     }
 
-    public bool Intersection(CollisionComponent c1, CollisionComponent c2)
+    public static bool Intersection(CollisionComponent c1, CollisionComponent c2)
     {
+        if (c1 == null || c2 == null) return false;
+
         Profiler.BeginSample("Test One Intersection");
-        Vector3 separation = new Vector3(
+        var separation = new Vector3(
             c2.transform.position.x - c1.transform.position.x, 0,
             c2.transform.position.z - c1.transform.position.z);
-        float distance = separation.magnitude;
+        var distance = separation.magnitude;
         Profiler.EndSample();
 
         return distance < c1.Radius + c2.Radius;
     }
 
-    public Vector3 Overlap(CollisionComponent c1, CollisionComponent c2)
+    public static Vector3 Overlap(CollisionComponent c1, CollisionComponent c2)
     {
-        Vector3 direction = new Vector3(
+        if (c1 == null || c2 == null) return Vector3.zero;
+
+        var direction = new Vector3(
             c2.transform.position.x - c1.transform.position.x, 0,
             c2.transform.position.z - c1.transform.position.z);
-        float distance = direction.magnitude;
+        var distance = direction.magnitude;
         if (distance < c1.Radius + c2.Radius)
             return -direction.normalized * (c1.Radius + c2.Radius - distance);
 

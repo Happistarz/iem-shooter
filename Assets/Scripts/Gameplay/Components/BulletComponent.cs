@@ -29,7 +29,7 @@ public class BulletComponent : ActorComponent
         
         foreach (var otherCollision in intersections)
         {
-            Vector3 overlap = Game.CollisionSystem.Overlap(collision, otherCollision);
+            Vector3 overlap = CollisionSystem.Overlap(collision, otherCollision);
             if (overlap != Vector3.zero)
                 OnCollision(otherCollision);
         }

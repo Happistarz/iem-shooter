@@ -6,72 +6,75 @@ using UnityEngine;
 [Serializable]
 public class SpatialGrid<T> : IEnumerable<T>
 {
-    public T[] Data => m_data;
+    public T[] Data => _data;
 
-    public Vector2 Min => m_min;
-    public Vector2 Max => m_max;
+    public Vector2 Min => _min;
+    public Vector2 Max => _max;
 
-    public int CountX => m_countX;
-    public int CountY => m_countY;
+    public int CountX => _countX;
+    public int CountY => _countY;
 
-    public Vector2 Center => 0.5f * (m_max + m_min); 
-    public Vector2 Size => m_max - m_min;
-    public Bounds2D Bounds => new Bounds2D(Min, Max);
-    public Vector2 CellSize => new Vector2((m_max.x - m_min.x) / (m_countX), (m_max.y - m_min.y) / (m_countY));
+    public Vector2  Center   => 0.5f * (_max + _min);
+    public Vector2  Size     => _max - _min;
+    public Bounds2D Bounds   => new(Min, Max);
+    public Vector2  CellSize => new((_max.x - _min.x) / _countX, (_max.y - _min.y) / _countY);
 
-    public IEnumerable<Point> Indices {
-        get {
-            for (int i = 0; i < m_countX; i++) for (int j = 0; j < m_countY; j++) yield return new Point(i, j);
+    public IEnumerable<Point> Indices
+    {
+        get
+        {
+            for (var i = 0; i < _countX; i++)
+                for (var j = 0; j < _countY; j++)
+                    yield return new Point(i, j);
         }
     }
 
-    public T this[Vector2 position] {
+    public T this[Vector2 position]
+    {
         get => Get(position);
         set => Set(ref value, position);
     }
 
-    public T this[int i, int j] {
+    public T this[int i, int j]
+    {
         get => Get(i, j);
         set => Set(ref value, i, j);
     }
 
-    public T this[Point p] {
+    public T this[Point p]
+    {
         get => Get(p.x, p.y);
         set => Set(ref value, p.x, p.y);
     }
 
-    [HideInInspector]
-    [SerializeField]
-    T[] m_data;
+    [HideInInspector] [SerializeField] private T[] _data;
 
-    [SerializeField]
-    Vector2 m_min, m_max;
+    [SerializeField] private Vector2 _min, _max;
 
-    [SerializeField]
-    int m_countX, m_countY;
+    [SerializeField] private int _countX, _countY;
 
 
     public SpatialGrid()
     {
-        m_data = new T[0];
+        _data = Array.Empty<T>();
     }
 
     public SpatialGrid(Vector2 minCorner, Vector2 maxCorner, int nCellX, int nCellY)
     {
-        m_min = new Vector2(
+        _min = new Vector2(
             System.Math.Min(minCorner.x, maxCorner.x),
             System.Math.Min(minCorner.y, maxCorner.y));
-        m_max = new Vector2(
+        _max = new Vector2(
             System.Math.Max(minCorner.x, maxCorner.x),
             System.Math.Max(minCorner.y, maxCorner.y));
 
-        m_countX = nCellX;
-        m_countY = nCellY;
+        _countX = nCellX;
+        _countY = nCellY;
 
-        m_data = new T[m_countX * m_countY];
+        _data = new T[_countX * _countY];
     }
-        
-    public SpatialGrid( float size, int nCellXY ) 
+
+    public SpatialGrid(float size, int nCellXY)
         : this(0.5f * size * -Vector2.one, 0.5f * size * Vector2.one, nCellXY, nCellXY)
     {
     }
@@ -79,15 +82,15 @@ public class SpatialGrid<T> : IEnumerable<T>
     public ref T Get(int i, int j)
     {
         if (Contains(i, j) == false)
-            throw new ArgumentOutOfRangeException( $"Point {new Point( i, j )} is out of bound" );
+            throw new ArgumentOutOfRangeException($"Point {new Point(i, j)} is out of bound");
 
-        int index = GetLinearIndex(i, j);
-        return ref m_data[index];
+        var index = GetLinearIndex(i, j);
+        return ref _data[index];
     }
 
     public ref T Get(Vector2 position)
     {
-        Point point = GetCellIndex(position);
+        var point = GetCellIndex(position);
         return ref Get(point.x, point.y);
     }
 
@@ -96,19 +99,19 @@ public class SpatialGrid<T> : IEnumerable<T>
         if (Contains(i, j) == false)
             throw new ArgumentOutOfRangeException();
 
-        int index = GetLinearIndex(i, j);
-        m_data[index] = value;
+        var index = GetLinearIndex(i, j);
+        _data[index] = value;
     }
 
     public void Set(ref T value, Vector2 position)
     {
-        Point point = GetCellIndex(position);
+        var point = GetCellIndex(position);
         Set(ref value, point.x, point.y);
     }
 
     public Point GetIndex2D(int i)
     {
-        return new Point(i % m_countX, i / m_countX);
+        return new Point(i % _countX, i / _countX);
     }
 
     public int GetLinearIndex(int i, int j)
@@ -116,7 +119,7 @@ public class SpatialGrid<T> : IEnumerable<T>
         if (Contains(i, j) == false)
             throw new ArgumentOutOfRangeException();
 
-        return j * m_countX + i;
+        return j * _countX + i;
     }
 
     public int GetLinearIndex(Point p)
@@ -126,22 +129,22 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public int GetLinearIndex(Vector2 position)
     {
-        Point point = GetCellIndex(position);
+        var point = GetCellIndex(position);
         return GetLinearIndex(point.x, point.y);
     }
 
     public Point GetCellIndex(Vector2 position)
     {
-        float localX = position.x - m_min.x;
-        float localY = position.y - m_min.y;
+        var localX = position.x - _min.x;
+        var localY = position.y - _min.y;
 
         if (CellSize.x == 0)
             return new Point(0, 0);
         if (CellSize.y == 0)
             return new Point(0, 0);
 
-        int i = (int)UnityEngine.Mathf.FloorToInt(localX / CellSize.x);
-        int j = (int)UnityEngine.Mathf.FloorToInt(localY / CellSize.y);
+        var i = Mathf.FloorToInt(localX / CellSize.x);
+        var j = Mathf.FloorToInt(localY / CellSize.y);
 
         if (i == CountX)
             i--;
@@ -157,19 +160,19 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public Point GetCellIndexBounded(Vector2 position)
     {
-        position = Vector2.Max(m_min, position);
-        position = Vector2.Min(m_max, position);
+        position = Vector2.Max(_min, position);
+        position = Vector2.Min(_max, position);
 
-        float localX = position.x - m_min.x;
-        float localY = position.y - m_min.y;
+        var localX = position.x - _min.x;
+        var localY = position.y - _min.y;
 
         if (CellSize.x == 0)
             return new Point(0, 0);
         if (CellSize.y == 0)
             return new Point(0, 0);
 
-        int i = (int)UnityEngine.Mathf.FloorToInt(localX / CellSize.x);
-        int j = (int)UnityEngine.Mathf.FloorToInt(localY / CellSize.y);
+        var i = Mathf.FloorToInt(localX / CellSize.x);
+        var j = Mathf.FloorToInt(localY / CellSize.y);
 
         if (i == CountX)
             i--;
@@ -185,17 +188,17 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public IEnumerable<Point> GetNeighbours4(Point p)
     {
-        if (p.x != 0) yield return new Point(p.x - 1, p.y);
+        if (p.x != 0) yield return new Point(p.x          - 1, p.y);
         if (p.x != CountX - 1) yield return new Point(p.x + 1, p.y);
-        if (p.y != 0) yield return new Point(p.x, p.y - 1);
-        if (p.y != CountY - 1) yield return new Point(p.x, p.y + 1);
+        if (p.y != 0) yield return new Point(p.x,              p.y - 1);
+        if (p.y != CountY - 1) yield return new Point(p.x,     p.y + 1);
     }
 
     public IEnumerable<Point> GetNeighbours8(Point p)
     {
-        for (int i = -1; i < 2; i++)
+        for (var i = -1; i < 2; i++)
         {
-            for (int j = -1; j < 2; j++)
+            for (var j = -1; j < 2; j++)
             {
                 if (i == 0 && j == 0) continue;
                 if (Contains(p.x + i, p.y + j)) yield return new Point(p.x + i, p.y + j);
@@ -205,29 +208,30 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public IEnumerable<Point> GetNeighbours24(Point p)
     {
-        for (int i = -2; i <= 2; i++)
+        for (var i = -2; i <= 2; i++)
         {
-            for (int j = -2; j <= 2; j++)
+            for (var j = -2; j <= 2; j++)
             {
                 if (i == 0 && j == 0) continue;
                 if (Contains(p.x + i,
-                        p.y + j)) yield return new Point(p.x + i, p.y + j);
+                             p.y + j)) yield return new Point(p.x + i, p.y + j);
             }
         }
     }
 
     public IEnumerable<Point> GetIndices(Vector2 min, Vector2 max)
     {
-        min.x = Mathf.Clamp(min.x, m_min.x, m_max.x);
-        min.y = Mathf.Clamp(min.y, m_min.y, m_max.y);
-        max.x = Mathf.Clamp(max.x, m_min.x, m_max.x);
-        max.y = Mathf.Clamp(max.y, m_min.y, m_max.y);
+        min.x = Mathf.Clamp(min.x, _min.x, _max.x);
+        min.y = Mathf.Clamp(min.y, _min.y, _max.y);
+        max.x = Mathf.Clamp(max.x, _min.x, _max.x);
+        max.y = Mathf.Clamp(max.y, _min.y, _max.y);
 
-        Point minIdx = GetCellIndex(min);
-        Point maxIdx = GetCellIndex(max);
+        var minIdx = GetCellIndex(min);
+        var maxIdx = GetCellIndex(max);
 
-        for (int i = minIdx.x; i <= maxIdx.x; i++)
-        for (int j = minIdx.y; j <= maxIdx.y; j++) yield return new Point(i, j);
+        for (var i = minIdx.x; i <= maxIdx.x; i++)
+            for (var j = minIdx.y; j <= maxIdx.y; j++)
+                yield return new Point(i, j);
     }
 
     public Vector2 GetCellCenter(Point p)
@@ -244,13 +248,13 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public bool Contains(Vector2 position)
     {
-        return position.x >= m_min.x && position.x <= m_max.x &&
-               position.y >= m_min.y && position.y <= m_max.y;
+        return position.x >= _min.x && position.x <= _max.x &&
+               position.y >= _min.y && position.y <= _max.y;
     }
 
     public bool Contains(int i, int j)
     {
-        return i >= 0 && i < m_countX && j >= 0 && j < m_countY;
+        return i >= 0 && i < _countX && j >= 0 && j < _countY;
     }
 
     public bool Contains(Point p)
@@ -265,11 +269,11 @@ public class SpatialGrid<T> : IEnumerable<T>
 
     public IEnumerator<T> GetEnumerator()
     {
-        return ((IEnumerable<T>)m_data).GetEnumerator();
+        return ((IEnumerable<T>)_data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return m_data.GetEnumerator();
+        return _data.GetEnumerator();
     }
 }
