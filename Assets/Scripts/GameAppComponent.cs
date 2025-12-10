@@ -21,7 +21,7 @@ public class GameAppComponent : MonoBehaviour
         Game.Data = gameData;
         Game.Enemies = new List<EnemyComponent>();
         Game.Player = null;
-        Game.CollisionSystem = new CollisionSystem();
+        Game.CollisionSystem = new CollisionSystem(Game.Data.GridExtent, Game.Data.GridCellCount);
 
         var gameLoopObject = new GameObject("GameLoop");
         m_gameLoop = gameLoopObject.AddComponent<GameLoop>();

@@ -49,6 +49,8 @@ public class GameLoop : MonoBehaviour
     public void Update()
     {
         if (IsPauseActive) return;
+        
+        Game.CollisionSystem.UpdateGrid();
 
         WaveTimer += Time.deltaTime;
         foreach (var wavePart in m_enemiesSpawnTimers.Keys.ToList())

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class BulletComponent : ActorComponent
 {
@@ -21,7 +22,11 @@ public class BulletComponent : ActorComponent
         transform.position += Time.deltaTime * Velocity;
 
         CollisionComponent collision = gameObject.GetComponentInSelfOrChildren<CollisionComponent>();
+        
+        Profiler.BeginSample("Get all intersections");
         IEnumerable<CollisionComponent> intersections = Game.CollisionSystem.GetIntersections(collision, CollisionType.Entity);
+        Profiler.EndSample();
+        
         foreach (var otherCollision in intersections)
         {
             Vector3 overlap = Game.CollisionSystem.Overlap(collision, otherCollision);

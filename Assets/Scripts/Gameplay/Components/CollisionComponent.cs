@@ -6,7 +6,6 @@ public class CollisionComponent : MonoBehaviour
     public CollisionType Type;
     public float Radius;
     
-    
     public ActorComponent GetOwner()
     {
         ActorComponent actorComponent = GetComponent<ActorComponent>();
@@ -18,18 +17,6 @@ public class CollisionComponent : MonoBehaviour
             return actorComponent;
 
         throw new Exception("Cannot find collision owner");
-    }
-    
-    public Vector3 GetOverlapOffset(CollisionComponent other)
-    {
-        Vector3 direction = new Vector3(other.transform.position.x - transform.position.x, 0, other.transform.position.z - transform.position.z);
-        float distance = direction.magnitude;
-        if (distance < Radius + other.Radius)
-        {
-            return -direction.normalized * (Radius + other.Radius - distance);
-        }
-
-        return Vector3.zero;
     }
 
     void OnDrawGizmos()
