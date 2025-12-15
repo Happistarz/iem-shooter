@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapons.MultishotProjectileWeapon
   BulletPrefab: {fileID: 5165459290239179195, guid: aaaa0bf6cdf58f140bfd5240f2ff8aa1, type: 3}
   MultiShot: 2
-  Speed: 40
+  Speed: 50
   RateOfFire: 2.25
   MultiShotCount: 10

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CollisionComponent : MonoBehaviour
 {
@@ -14,10 +13,7 @@ public class CollisionComponent : MonoBehaviour
             return actorComponent;
         
         actorComponent = GetComponentInParent<ActorComponent>();
-        if (actorComponent != null)
-            return actorComponent;
-
-        throw new Exception("Cannot find collision owner");
+        return actorComponent != null ? actorComponent : null; // Retourner null au lieu de lever une exception
     }
 
     void OnDrawGizmos()

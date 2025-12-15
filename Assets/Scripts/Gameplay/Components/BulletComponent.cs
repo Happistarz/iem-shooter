@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class BulletComponent : ActorComponent
 {
@@ -9,6 +8,11 @@ public class BulletComponent : ActorComponent
     public float SpawnTime;
 
     public void Start()
+    {
+        SpawnTime = Time.time;
+    }
+
+    public void Reset()
     {
         SpawnTime = Time.time;
     }
@@ -24,7 +28,7 @@ public class BulletComponent : ActorComponent
         transform.position += Time.deltaTime * Velocity;
 
         var collision     = gameObject.GetComponentInSelfOrChildren<CollisionComponent>();
-        var intersections = CollisionSystem.GetIntersections(collision, CollisionType.Entity);
+        var intersections = Game.CollisionSystem.GetIntersections(collision, CollisionType.Entity);
         foreach (var otherCollision in intersections)
         {
             var overlap = CollisionSystem.Overlap(collision, otherCollision);
@@ -35,6 +39,8 @@ public class BulletComponent : ActorComponent
 
     private void OnCollision(CollisionComponent otherCollision)
     {
+        if (otherCollision is null) return;
+        
         var actor = otherCollision.GetOwner();
 
         if (actor == null || actor == Owner) return;

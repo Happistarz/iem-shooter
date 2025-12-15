@@ -16,4 +16,6 @@ public class EnemyData : ScriptableObject
     public int Rarity = 5;
 
     public int Health = 1;
+    
+    public float MoveSpeed = 2f;
 }

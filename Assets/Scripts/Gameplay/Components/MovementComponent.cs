@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class MovementComponent : MonoBehaviour
 {
-    [FormerlySerializedAs("Speed")] public float speed;
+    public float speed;
 
     private Vector3 _direction;
 
@@ -27,5 +25,10 @@ public class MovementComponent : MonoBehaviour
     public void SetMovementDirection(Vector3 moveDirection)
     {
         _direction = moveDirection;
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
     }
 }

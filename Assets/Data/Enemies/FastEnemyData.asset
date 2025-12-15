@@ -15,3 +15,6 @@ MonoBehaviour:
   Name: Fast Enemy
   Prefab: {fileID: 3685143366263066905, guid: 600b124a7d12647408f5e14831929b67, type: 3}
   Threat: 1
+  Rarity: 5
+  Health: 1
+  MoveSpeed: 16

@@ -1,6 +1,5 @@
-﻿using System;
+﻿﻿using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Weapons
 {
@@ -43,7 +42,8 @@ namespace Weapons
 
             for (var i = 0; i < _multiShotCount; i++)
             {
-                var bullet = Object.Instantiate(_prefab);
+                var bullet = Game.BulletPrefabPool.Get();
+                bullet.Reset();
                 bullet.transform.position = origin;
 
                 bullet.Velocity = Quaternion.AngleAxis(angle, Vector3.up) * direction * _speed;

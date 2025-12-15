@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using Weapons;
-using Object = UnityEngine.Object;
 
 public class RainbowWeaponEffect : IWeaponEffect
 {
@@ -34,7 +33,7 @@ public class RainbowWeaponEffect : IWeaponEffect
         var angle          = Time.time * _rotationSpeed;
         var shootDirection = Rotate(Vector3.forward, angle);
 
-        var bullet = Object.Instantiate(_prefab);
+        var bullet = Game.BulletPrefabPool.Get();
         bullet.transform.position = origin;
         bullet.Velocity           = shootDirection * _bulletSpeed;
         bullet.Owner              = Owner;

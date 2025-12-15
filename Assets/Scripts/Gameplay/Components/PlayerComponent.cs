@@ -12,6 +12,8 @@ public class PlayerComponent : ActorComponent
 
     private MovementComponent _movementComponent;
     private BounceAnimationComponent _bounceAnimation;
+    
+    public AudioSource ShootAudioSource;
 
     public void Start()
     {
@@ -33,6 +35,8 @@ public class PlayerComponent : ActorComponent
 
     private void OnWeaponShoot()
     {
+        ShootAudioSource.Play();
+        
         if (_bounceAnimation != null)
             _bounceAnimation.TriggerBounce();
     }

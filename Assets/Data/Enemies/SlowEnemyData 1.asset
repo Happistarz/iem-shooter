@@ -15,5 +15,6 @@ MonoBehaviour:
   Name: Slow Enemy
   Prefab: {fileID: 5908054325171983805, guid: 38d9599a711ac884188e58fd6749d946, type: 3}
   Threat: 0
-  Rarity: 3
+  Rarity: 1
   Health: 3
+  MoveSpeed: 5

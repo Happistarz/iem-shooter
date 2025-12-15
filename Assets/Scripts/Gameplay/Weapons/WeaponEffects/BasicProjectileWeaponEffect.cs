@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Weapons
 {
@@ -35,7 +34,7 @@ namespace Weapons
 
         private void Shoot(Vector3 origin, Vector3 direction)
         {
-            var bullet = Object.Instantiate(_prefab);
+            var bullet = Game.BulletPrefabPool.Get();
             bullet.transform.position = origin;
             bullet.Velocity = direction * _speed;
             bullet.Owner = Owner;

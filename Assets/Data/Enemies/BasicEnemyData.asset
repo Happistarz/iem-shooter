@@ -15,3 +15,6 @@ MonoBehaviour:
   Name: Simple Enemy
   Prefab: {fileID: 8464274641385029406, guid: 46c70cb0ff5143147b4798eb5092a6bb, type: 3}
   Threat: 0
+  Rarity: 8
+  Health: 1
+  MoveSpeed: 12

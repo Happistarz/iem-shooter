@@ -19,6 +19,7 @@ public class EnemyComponent : ActorComponent
             moveDirection = (player.transform.position - transform.position).normalized;
 
         _movementComponent.SetMovementDirection(moveDirection);
+        _movementComponent.SetSpeed(enemyData.MoveSpeed);
     }
 
     protected override void OnDeath()
