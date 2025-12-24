@@ -9,16 +9,19 @@ public class WaveParameters : ScriptableObject
     [Serializable]
     public class WavePart
     {
-        public EnemyData.ThreatLevel Threat;
-        public int Count;
+        public                 EnemyData.ThreatLevel Threat;
+        [Range(0, 100)] public int                   Percentage;
     }
 
     [Serializable]
     public class Wave
     {
-        [FormerlySerializedAs("Enemies")] public List<WavePart> Parts = new List<WavePart>();
+        public string Name;
+        public float  Duration;
+        public int TotalEnemies;
+        public List<WavePart> Parts = new();
+        public BossReactionData BossReaction;
     }
     
-    public float WaveDuration;
     public List<Wave> Waves;
 }

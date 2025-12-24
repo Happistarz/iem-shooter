@@ -11,11 +11,13 @@ public class EnemyData : ScriptableObject
     public string Name;
     public EnemyComponent Prefab;
     public ThreatLevel Threat;
+    public AudioClip DeathSound;
     
     [Range(1, 10)]
     public int Rarity = 5;
 
     public int Health = 1;
+    public int Damage = 1;
     
     public float MoveSpeed = 2f;
 }

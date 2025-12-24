@@ -4,7 +4,8 @@ public class CollisionComponent : MonoBehaviour
 {
     public CollisionType Type;
     public float Radius;
-    
+
+    public bool IsStatic;
     
     public ActorComponent GetOwner()
     {
@@ -18,7 +19,7 @@ public class CollisionComponent : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = IsStatic ? Color.green : Color.red;
         
         var points = new Vector3[32];
         for (var i = 0; i < 32; i++)

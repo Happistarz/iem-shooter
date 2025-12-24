@@ -24,6 +24,7 @@ public class EnemyComponent : ActorComponent
 
     protected override void OnDeath()
     {
+        Game.AudioManager.PlaySoundAtPosition(enemyData.DeathSound, transform.position);
         Game.GetEnemyPool(enemyData).Release(this);
     }
 

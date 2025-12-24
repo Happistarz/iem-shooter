@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: Simple Enemy
   Prefab: {fileID: 8464274641385029406, guid: 46c70cb0ff5143147b4798eb5092a6bb, type: 3}
   Threat: 0
+  DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
   Rarity: 8
   Health: 1
   MoveSpeed: 12

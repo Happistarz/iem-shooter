@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,17 +22,40 @@ public class UIManager : MonoBehaviour
     [FormerlySerializedAs("NoUpgradeText")]
     public GameObject noUpgradeText;
 
-    public TextMeshProUGUI SelectWeaponNameText;
+    [FormerlySerializedAs("SelectWeaponNameText")]
+    public TextMeshProUGUI selectWeaponNameText;
 
-    public Button          UpgradeButtonA;
-    public TextMeshProUGUI UpgradeButtonAText;
-    public Button          UpgradeButtonB;
-    public TextMeshProUGUI UpgradeButtonBText;
-    public Button          PassButton;
+    [FormerlySerializedAs("UpgradeButtonA")]
+    public Button upgradeButtonA;
+
+    [FormerlySerializedAs("UpgradeButtonAText")]
+    public TextMeshProUGUI upgradeButtonAText;
+
+    [FormerlySerializedAs("UpgradeButtonB")]
+    public Button upgradeButtonB;
+
+    [FormerlySerializedAs("UpgradeButtonBText")]
+    public TextMeshProUGUI upgradeButtonBText;
+
+    [FormerlySerializedAs("PassButton")] public Button passButton;
+
+    [FormerlySerializedAs("DamageOverlayImage")]
+    public Image damageOverlayImage;
+
+    [FormerlySerializedAs("HealthUIComponent")]
+    public HealthUIComponent healthUIComponent;
+
+    [FormerlySerializedAs("BossReactionComponent")]
+    public BossReactionComponent bossReactionComponent;
 
     [FormerlySerializedAs("Selection")] public SelectionResult selection;
 
     private Canvas _canvas;
+
+    private void Awake()
+    {
+        Game.UI = this;
+    }
 
     public void Start()
     {
@@ -42,13 +67,43 @@ public class UIManager : MonoBehaviour
     {
         titleText.SetActive(false);
         selectText.SetActive(false);
-        SelectWeaponNameText.gameObject.SetActive(false);
+        selectWeaponNameText.gameObject.SetActive(false);
         noUpgradeText.SetActive(false);
-        UpgradeButtonA.gameObject.SetActive(false);
-        UpgradeButtonB.gameObject.SetActive(false);
-        PassButton.gameObject.SetActive(false);
+        upgradeButtonA.gameObject.SetActive(false);
+        upgradeButtonB.gameObject.SetActive(false);
+        passButton.gameObject.SetActive(false);
+        damageOverlayImage.gameObject.SetActive(false);
+        healthUIComponent.gameObject.SetActive(false);
+        // BossReactionComponent.gameObject.SetActive(false);
 
         selection = SelectionResult.None;
+    }
+
+    public void ShowBossReaction(BossReactionData data)
+    {
+        bossReactionComponent.gameObject.SetActive(true);
+        bossReactionComponent.PlayBossReaction(data);
+    }
+
+    public void ShowHealth(float currentHealth, float maxHealth)
+    {
+        healthUIComponent.gameObject.SetActive(true);
+        healthUIComponent.UpdateHealth(currentHealth, maxHealth);
+    }
+
+    public void ShowDamageOverlay()
+    {
+        StartCoroutine(DamageOverlayAnimationCoroutine());
+    }
+
+    private IEnumerator DamageOverlayAnimationCoroutine()
+    {
+        damageOverlayImage.gameObject.SetActive(true);
+        damageOverlayImage.DOFade(0.8f, 0.1f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.1f);
+        damageOverlayImage.DOFade(0f, 0.5f).SetEase(Ease.InQuad);
+        yield return new WaitForSeconds(0.5f);
+        damageOverlayImage.gameObject.SetActive(false);
     }
 
     public void ShowTitle()
@@ -59,8 +114,8 @@ public class UIManager : MonoBehaviour
     public void ShowSelectText(string weaponName)
     {
         selectText.gameObject.SetActive(true);
-        SelectWeaponNameText.gameObject.SetActive(true);
-        SelectWeaponNameText.text = weaponName;
+        selectWeaponNameText.gameObject.SetActive(true);
+        selectWeaponNameText.text = weaponName;
     }
 
     public void ShowNoUpgradeText()
@@ -70,11 +125,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowButtons(string upgradeAText, string upgradeBText)
     {
-        UpgradeButtonA.gameObject.SetActive(true);
-        UpgradeButtonAText.text = upgradeAText;
-        UpgradeButtonB.gameObject.SetActive(true);
-        UpgradeButtonBText.text = upgradeBText;
-        PassButton.gameObject.SetActive(true);
+        upgradeButtonA.gameObject.SetActive(true);
+        upgradeButtonAText.text = upgradeAText;
+        upgradeButtonB.gameObject.SetActive(true);
+        upgradeButtonBText.text = upgradeBText;
+        passButton.gameObject.SetActive(true);
     }
 
     public void OnUpgradeA()

@@ -5,11 +5,15 @@ using UnityEngine;
 public static class Game
 {
     public static GameData Data;
+    
+    public static UIManager UI;
 
     public static PlayerComponent      Player;
     public static List<EnemyComponent> Enemies;
 
     public static CollisionSystem CollisionSystem;
+    
+    public static SoundManager AudioManager;
 
     public static readonly Dictionary<EnemyData, PrefabPool<EnemyComponent>> ENEMY_PREFAB_POOLS = new();
     public static          PrefabPool<BulletComponent>                       BulletPrefabPool;
@@ -33,6 +37,6 @@ public static class Game
     public static PrefabPool<EnemyComponent> GetEnemyPool(EnemyData enemy)
     {
         var enemyData = Data.Enemies.FirstOrDefault(e => e == enemy);
-        return enemyData == null ? null : ENEMY_PREFAB_POOLS[enemyData];
+        return !enemyData ? null : ENEMY_PREFAB_POOLS[enemyData];
     }
 }

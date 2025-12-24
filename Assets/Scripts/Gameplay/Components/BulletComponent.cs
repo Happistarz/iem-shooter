@@ -7,12 +7,12 @@ public class BulletComponent : ActorComponent
     public float MaxDuration = 5f;
     public float SpawnTime;
 
-    public void Start()
+    private void OnEnable()
     {
-        SpawnTime = Time.time;
+        Reset();
     }
 
-    public void Reset()
+    public void Start()
     {
         SpawnTime = Time.time;
     }
@@ -39,15 +39,20 @@ public class BulletComponent : ActorComponent
 
     private void OnCollision(CollisionComponent otherCollision)
     {
-        if (otherCollision is null) return;
-        
-        var actor = otherCollision.GetOwner();
+        var actor = otherCollision?.GetOwner();
 
-        if (actor == null || actor == Owner) return;
+        if (actor is null || actor == Owner) return;
         actor.ApplyDamage(1);
         OnDeath();
     }
-    
+
+    public void Reset()
+    {
+        Owner     = null;
+        Velocity  = Vector3.zero;
+        SpawnTime = Time.time;
+    }
+
     protected override void OnDeath()
     {
         Game.BulletPrefabPool.Release(this);

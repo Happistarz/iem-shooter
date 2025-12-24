@@ -12,16 +12,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7cc86dcfc4b46a890cf788da9e47c48, type: 3}
   m_Name: Waves
   m_EditorClassIdentifier: 
-  WaveDuration: 20
   Waves:
-  - Parts:
+  - Name: Wave 1
+    Duration: 20
+    TotalEnemies: 20
+    Parts:
     - Threat: 0
-      Count: 5
-  - Parts:
+      Percentage: 100
+    BossReaction:
+      reactionType: 0
+      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionText: T NUL
+      reactionColor: {r: 1, g: 1, b: 1, a: 0}
+      doGlitch: 0
+  - Name: Wave 2
+    Duration: 40
+    TotalEnemies: 50
+    Parts:
     - Threat: 0
-      Count: 20
-  - Parts:
-    - Threat: 0
-      Count: 30
+      Percentage: 90
     - Threat: 1
-      Count: 10
+      Percentage: 10
+    BossReaction:
+      reactionType: 1
+      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionText: HAHAAHAHHA
+      reactionColor: {r: 1, g: 0, b: 0, a: 0}
+      doGlitch: 1
+  - Name: Wave 3
+    Duration: 40
+    TotalEnemies: 100
+    Parts:
+    - Threat: 0
+      Percentage: 75
+    - Threat: 1
+      Percentage: 25
+    BossReaction:
+      reactionType: 0
+      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionText: jkjkjkkjjkjkjkjk
+      reactionColor: {r: 1, g: 0.8263446, b: 0, a: 0}
+      doGlitch: 0
+  - Name: Wave 4
+    Duration: 60
+    TotalEnemies: 160
+    Parts:
+    - Threat: 0
+      Percentage: 50
+    - Threat: 1
+      Percentage: 40
+    - Threat: 2
+      Percentage: 10
+    BossReaction:
+      reactionType: 1
+      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionText: AZY C BON
+      reactionColor: {r: 1, g: 0, b: 0, a: 0}
+      doGlitch: 1
+  - Name: Wave 5
+    Duration: 100
+    TotalEnemies: 220
+    Parts:
+    - Threat: 0
+      Percentage: 30
+    - Threat: 1
+      Percentage: 50
+    - Threat: 2
+      Percentage: 20
+    BossReaction:
+      reactionType: 1
+      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionText: j'arrive XDDD
+      reactionColor: {r: 1, g: 0, b: 0, a: 0}
+      doGlitch: 1

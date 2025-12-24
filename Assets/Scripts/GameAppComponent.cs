@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,13 @@ public class GameAppComponent : MonoBehaviour
         Game.Enemies = new List<EnemyComponent>();
         Game.Player = null;
         Game.CollisionSystem = new CollisionSystem(Game.Data.GridExtent, Game.Data.GridCellCount);
+
+        DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
+        DOTween.SetTweensCapacity(2000, 500);
+        
+        var audioManagerObject = new GameObject("AudioManager");
+        Game.AudioManager = audioManagerObject.AddComponent<SoundManager>();
+        Game.AudioManager.Init();
 
         var gameLoopObject = new GameObject("GameLoop");
         _gameLoop = gameLoopObject.AddComponent<GameLoop>();

@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HologramMaterial
+  m_Shader: {fileID: 4800000, guid: 2b94766b857fd2f4bb2e72cb2bc307b1, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - UNITY_UI_ALPHACLIP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: 6c0e4af54e29b124d9b1dbf2d19f6941, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FlickerTex:
+        m_Texture: {fileID: 2800000, guid: 8eb4ebed7e9913549b9dd7dbebe4d57f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HoloNoise:
+        m_Texture: {fileID: 2800000, guid: 35a002ee0d2251a429e8bc4e95cc09ae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7def4f1ef16215342ba8bb0f9e8b057f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanTex1:
+        m_Texture: {fileID: 2800000, guid: 35a002ee0d2251a429e8bc4e95cc09ae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanTex2:
+        m_Texture: {fileID: 2800000, guid: 7b8f91548fae2d94194e9d68c4409de8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Alpha: 1
+    - _BandFrequency: 212.7
+    - _BandSharpness: 7.42
+    - _BandSpeed: 54.2
+    - _Bias: 1.24
+    - _Brightness: 11.75
+    - _ColorGlitchAmount: 0.8
+    - _ColorGlitchOffset: 0.05
+    - _ColorMask: 49.3
+    - _Contrast: 1
+    - _DissolveAmount: 0
+    - _DissolveEdge: 0.1
+    - _ExternalGlitchActive: 0
+    - _FlickerIntensity: 0.25
+    - _FlickerRepeat: 1
+    - _FlickerSpeed: 3
+    - _Fold: 1
+    - _GlitchDuration: 0.35
+    - _GlitchFrequency: 0.65
+    - _GlitchIntensity: 0.2
+    - _GlitchProbability: 0.8
+    - _GlitchSpeed: 6.3
+    - _GlowSpeed: 1.6
+    - _GlowTiling: 0.134
+    - _MinAlpha: 1
+    - _MinimumAlpha: 0.99
+    - _Noise: 1
+    - _RandomOffset: 0
+    - _RimBrightness: 0.83
+    - _RimPower: 0.1
+    - _RimThreshold: 0.7
+    - _ScanIntensity: 0.5
+    - _ScanLineCount: 128
+    - _ScanLineSpeed: 2.5
+    - _ScanLineThickness: 0.5
+    - _ScanSpeed: 1.98
+    - _ScanSpeed1: 1
+    - _ScanSpeed2: -0.5
+    - _ScanTiling: 1.49
+    - _ScanlineBrightness: 1.09
+    - _ScanlineDirection: 0
+    - _ScanlineScale: 12.5
+    - _ScanlineSpeed: 40.7
+    - _ScanlineThickness: 0.244
+    - _ScanningFrequency: 74.9
+    - _ScanningSpeed: 44.1
+    - _Stencil: 6.31
+    - _StencilComp: 9.56
+    - _StencilOp: 2.16
+    - _StencilReadMask: 294.5
+    - _StencilWriteMask: 256.86
+    - _UseUIAlphaClip: 1
+    - _VertexGlitchAmount: 0.45
+    - _VerticalFade: 1
+    - _VignetteBoost: 2.55
+    - _VignetteInverseScale: 2.57
+    - _VoxelBlend: 0.4
+    - _VoxelSize: 0.04
+    m_Colors:
+    - _Color: {r: 0, g: 0, b: 1, a: 1}
+    - _Direction: {r: 0, g: 1, b: 2.68, a: 0}
+    - _GlowTint: {r: 1, g: 1, b: 1, a: 1}
+    - _HoloColor: {r: 0, g: 0.7, b: 0, a: 1}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainTint: {r: 0.08235294, g: 0.44705883, b: 0.69803923, a: 1}
+    - _RimColor: {r: 0, g: 0.35730076, b: 1, a: 1}
+    - _ScanlineData: {r: 2.65, g: 12.17, b: 15.76, a: 1.69}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

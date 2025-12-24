@@ -5,6 +5,8 @@ public class SinFactorComponent : MonoBehaviour
 {
     [FormerlySerializedAs("Frequency")] public float frequency = 1f;
     [FormerlySerializedAs("Amplitude")] public float amplitude = 1f;
+    
+    public MovementComponent movement;
 
     private float _phaseOffset;
 
@@ -20,6 +22,9 @@ public class SinFactorComponent : MonoBehaviour
 
     public void Update()
     {
+        if (movement && movement.canMove)
+            return;
+        
         var sinFactor = GetSinFactor(Time.time);
 
         var forward = transform.forward;

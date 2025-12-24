@@ -19,12 +19,11 @@ public class GameLoop : MonoBehaviour
     //Game data
     private WaveParameters _waveParameters;
 
-    //current wave data 
-    private Dictionary<WaveParameters.WavePart, List<EnemyData>> _availableEnemies;
-    private Dictionary<WaveParameters.WavePart, float>           _enemiesSpawnTimers;
+    private Queue<EnemyData> _enemiesToSpawnQueue = new();
+    private float            _spawnTimer;
+    private float            _spawnInterval = 1.0f;
 
     //References
-    private UIManager       _uiManager;
     private PlayerComponent _player;
 
     //Utils
@@ -46,8 +45,8 @@ public class GameLoop : MonoBehaviour
         Game.Player                = _player;
 
         //Start the game
-        StartWave(0);
-        isPauseActive = false;
+        // StartWave(0);
+        isPauseActive = true; // DEBUG: Start paused for testing
 
         //Initialize prefab pools
         foreach (var enemyData in Game.Data.Enemies)
@@ -72,49 +71,82 @@ public class GameLoop : MonoBehaviour
     public void Update()
     {
         if (isPauseActive) return;
-        
+
         Game.CollisionSystem.UpdateGrid();
 
         waveTimer += Time.deltaTime;
-        foreach (var wavePart in _enemiesSpawnTimers.Keys.ToList())
+        _spawnTimer += Time.deltaTime;
+        
+        if (_spawnTimer >= _spawnInterval && _enemiesToSpawnQueue.Count > 0)
         {
-            _enemiesSpawnTimers[wavePart] += Time.deltaTime;
-
-            var spawnDelay = _waveParameters.WaveDuration / wavePart.Count / Game.Data.SpawnMultiplier;
-            if (!(_enemiesSpawnTimers[wavePart] > spawnDelay)) continue;
-
-            var enemyToSpawn = SelectRandomEnemy(_availableEnemies[wavePart]);
-            SpawnEnemy(enemyToSpawn);
-            _enemiesSpawnTimers[wavePart] -= spawnDelay;
+            _spawnTimer = 0;
+            var enemyData = _enemiesToSpawnQueue.Dequeue();
+            SpawnEnemy(enemyData);
         }
 
-        if (waveTimer > _waveParameters.WaveDuration)
-        {
-            StartCoroutine(nameof(MoveToNextWaveCoroutine));
-        }
+        // Next wave
+        if (_enemiesToSpawnQueue.Count <= 0 || Game.Enemies.Count <= 0 || currentWave == null) return;
+        StartCoroutine(nameof(MoveToNextWaveCoroutine));
     }
 
     private void StartWave(int index)
     {
         currentWaveIndex = index;
+
         if (currentWaveIndex >= _waveParameters.Waves.Count)
-            currentWaveIndex = _waveParameters.Waves.Count - 1;
-        currentWave = _waveParameters.Waves[currentWaveIndex];
-
-        _availableEnemies   = new Dictionary<WaveParameters.WavePart, List<EnemyData>>();
-        _enemiesSpawnTimers = new Dictionary<WaveParameters.WavePart, float>();
-        foreach (var wavePart in currentWave.Parts)
         {
-            var enemiesAtThreat = Game.Data.Enemies.Where(e => e.Threat == wavePart.Threat).ToList();
-            if (enemiesAtThreat.Count <= 0) continue;
-
-            _availableEnemies[wavePart]   = enemiesAtThreat;
-            _enemiesSpawnTimers[wavePart] = 0;
+            StartBossFight();
+            return;
         }
+        
+        currentWave = _waveParameters.Waves[currentWaveIndex];
+        waveTimer  = 0;
+        _spawnTimer = 0;
 
-        waveTimer = 0;
+        _spawnInterval = currentWave.Duration / currentWave.TotalEnemies;
+        
+        PrepareWaveEnemies();
     }
 
+    private void PrepareWaveEnemies()
+    {
+        _enemiesToSpawnQueue.Clear();
+        List<EnemyData> waveList = new();
+
+        foreach (var part in currentWave.Parts)
+        {
+            var enemiesOfType = Game.Data.Enemies
+                .Where(enemy => enemy.Threat.Equals(part.Threat))
+                .ToList();
+            if (enemiesOfType.Count == 0) continue;
+            
+            var count = Mathf.RoundToInt(currentWave.TotalEnemies * (part.Percentage / 100.0f));
+            for (var i = 0; i < count; i++)
+            {
+                waveList.Add(SelectRandomEnemy(enemiesOfType));
+            }
+        }
+
+        while (waveList.Count < currentWave.TotalEnemies)
+        {
+            var simpleEnemies = Game.Data.Enemies
+                .Where(enemy => enemy.Threat.Equals(EnemyData.ThreatLevel.Simple))
+                .ToList();
+            waveList.Add(SelectRandomEnemy(simpleEnemies));
+        }
+        
+        var shuffledWaveList = waveList.OrderBy(_ => _random.Next()).ToList();
+        
+        _enemiesToSpawnQueue = new Queue<EnemyData>(shuffledWaveList);
+    }
+    
+    private void StartBossFight()
+    {
+        isPauseActive = true;
+        
+        Debug.Log("Boss Fight Started!");
+    }
+    
     private EnemyData SelectRandomEnemy(List<EnemyData> enemies)
     {
         // Calcule le poids total
@@ -141,10 +173,10 @@ public class GameLoop : MonoBehaviour
             FindObjectsSortMode.None);
 
         var spawner = spawnLocations[_random.Next(0, spawnLocations.Length)];
-        var enemy = Game.ENEMY_PREFAB_POOLS[enemyData].Get();
+        var enemy   = Game.ENEMY_PREFAB_POOLS[enemyData].Get();
 
         enemy.enemyData          = enemyData;
-        enemy.transform.position = spawner.transform.position;
+        enemy.transform.position = spawner.GetSpawnPosition();
         enemy.health             = enemyData.Health;
     }
 
@@ -155,14 +187,13 @@ public class GameLoop : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(0.5f);
 
-        _uiManager = FindFirstObjectByType<UIManager>();
-        _uiManager.ShowTitle();
+        Game.UI.ShowTitle();
         yield return new WaitForSecondsRealtime(0.5f);
 
-        _uiManager.ShowNoUpgradeText();
+        Game.UI.ShowNoUpgradeText();
         yield return new WaitForSecondsRealtime(2.0f);
 
-        _uiManager.HideAll();
+        Game.UI.HideAll();
 
         Time.timeScale = 1;
         StartWave(currentWaveIndex + 1);

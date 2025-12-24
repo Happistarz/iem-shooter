@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: FastEnemyData
   m_EditorClassIdentifier: 
   Name: Fast Enemy
-  Prefab: {fileID: 3685143366263066905, guid: 600b124a7d12647408f5e14831929b67, type: 3}
+  Prefab: {fileID: 1018455437551777802, guid: a164123f4970f314c864634a7b39ce92, type: 3}
   Threat: 1
+  DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
   Rarity: 5
   Health: 1
   MoveSpeed: 16

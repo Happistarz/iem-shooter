@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TractorBeamMaterial
+  m_Shader: {fileID: 4800000, guid: 069378bdd294eed45802b410879da065, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _USESCREENUV_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 8eb4ebed7e9913549b9dd7dbebe4d57f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanlineTex:
+        m_Texture: {fileID: 2800000, guid: 35a002ee0d2251a429e8bc4e95cc09ae, type: 3}
+        m_Scale: {x: 1, y: 1.5}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BeamHardness: 0.289
+    - _BottomWidth: 1
+    - _FresnelPower: 10
+    - _FresnelThreshold: 0.452
+    - _GlobalAlpha: 1
+    - _NoiseSpeed: 0.65
+    - _RingDensity: 15
+    - _RingGap: 0.07
+    - _RingSpeed: 1.5
+    - _RingThickness: 0.05
+    - _ScanlineSpeed: 0.2
+    - _TopWidth: 0
+    - _UseScreenUV: 1
+    m_Colors:
+    - _BottomColor: {r: 0, g: 0.89411765, b: 0.89411765, a: 0.23921569}
+    - _Color: {r: 0.06132078, g: 0.6282585, b: 1, a: 1}
+    - _FresnelColor: {r: 0.43867922, g: 0.8982745, b: 1, a: 1}
+    - _RingColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ScanlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TopColor: {r: 0, g: 0.89411765, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

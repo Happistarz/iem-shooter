@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7341207005403027670}
   - component: {fileID: 6262626708575942431}
   - component: {fileID: 3116555170320921214}
+  - component: {fileID: 5831785115773218322}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -65,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9af9a5950747d89fd226c44c6c0f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 1
   speed: 21
 --- !u!114 &523259857376672489
 MonoBehaviour:
@@ -80,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Radius: 1.5
+  IsStatic: 0
 --- !u!33 &8472313954019946374
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -272,3 +275,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5831785115773218322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015031868744359848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 426817cd5f4c40eca7b341c75fcbbc37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
+  health: 20
+  canTakeDamage: 1
+  invulnerabilityDuration: 2
+  blinkSpeed: 0.1
+  playerRenderer: {fileID: 7341207005403027670}
