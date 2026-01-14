@@ -5,18 +5,23 @@ using UnityEngine;
 public static class Game
 {
     public static GameData Data;
-    
+    public static bool IsGamePaused;
+
     public static UIManager UI;
 
     public static PlayerComponent      Player;
     public static List<EnemyComponent> Enemies;
+    
+    public static TractorBeamsController TractorBeamsController;
 
     public static CollisionSystem CollisionSystem;
-    
+
     public static SoundManager AudioManager;
+    public static MusicManagerComponent MusicManager;
 
     public static readonly Dictionary<EnemyData, PrefabPool<EnemyComponent>> ENEMY_PREFAB_POOLS = new();
-    public static          PrefabPool<BulletComponent>                       BulletPrefabPool;
+    
+    public static readonly Dictionary<BulletComponent, PrefabPool<BulletComponent>> BULLET_PREFAB_POOLS = new();
 
     public static EnemyComponent GetClosestEnemy(Vector3 position)
     {
@@ -38,5 +43,15 @@ public static class Game
     {
         var enemyData = Data.Enemies.FirstOrDefault(e => e == enemy);
         return !enemyData ? null : ENEMY_PREFAB_POOLS[enemyData];
+    }
+    
+    public static PrefabPool<BulletComponent> GetBulletPool(BulletComponent bullet)
+    {
+        if (BULLET_PREFAB_POOLS.TryGetValue(bullet, out var pool)) return pool;
+        
+        var poolHolder = new GameObject($"Pool_{bullet.name}");
+        var newPool    = new PrefabPool<BulletComponent>(poolHolder, bullet, 100);
+        BULLET_PREFAB_POOLS.Add(bullet, newPool);
+        return newPool;
     }
 }

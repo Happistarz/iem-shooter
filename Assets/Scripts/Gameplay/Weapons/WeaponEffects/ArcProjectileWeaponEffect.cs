@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using UnityEngine;
 
 namespace Weapons
@@ -42,7 +42,10 @@ namespace Weapons
 
             for (var i = 0; i < _multiShotCount; i++)
             {
-                var bullet = Game.BulletPrefabPool.Get();
+                var pool   = Game.GetBulletPool(_prefab);
+                var bullet = pool.Get();
+                bullet.prefab = _prefab;
+
                 bullet.Reset();
                 bullet.transform.position = origin;
 

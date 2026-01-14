@@ -4,11 +4,17 @@ using UnityEngine.Serialization;
 public class ActorComponent : MonoBehaviour
 {
     [FormerlySerializedAs("Health")] public int health = 1;
+    public int maxHealth;
 
     [FormerlySerializedAs("CanTakeDamage")]
-    public bool canTakeDamage;
+    public bool canTakeDamage = true;
 
-    public void ApplyDamage(int damage)
+    protected virtual void Awake()
+    {
+        maxHealth = health;
+    }
+
+    public virtual void ApplyDamage(int damage)
     {
         if (!canTakeDamage) return;
 

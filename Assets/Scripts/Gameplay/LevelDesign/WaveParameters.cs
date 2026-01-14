@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Waves/Parameters")]
 public class WaveParameters : ScriptableObject
@@ -9,8 +8,9 @@ public class WaveParameters : ScriptableObject
     [Serializable]
     public class WavePart
     {
-        public                 EnemyData.ThreatLevel Threat;
-        [Range(0, 100)] public int                   Percentage;
+        public EnemyData.ThreatLevel Threat;
+
+        [Range(0, 100)] public int Percentage;
     }
 
     [Serializable]
@@ -18,10 +18,17 @@ public class WaveParameters : ScriptableObject
     {
         public string Name;
         public float  Duration;
-        public int TotalEnemies;
-        public List<WavePart> Parts = new();
+        public int    TotalEnemies;
+
+        [Header("Beam Settings")]
+        [Range(0, 100)] public int MoveBeamChance = 0;
+
+        [Tooltip("-1 for random, otherwise specific beam index")]
+        public int BeamIndex = -1;
+
+        public List<WavePart>   Parts = new();
         public BossReactionData BossReaction;
     }
-    
+
     public List<Wave> Waves;
 }

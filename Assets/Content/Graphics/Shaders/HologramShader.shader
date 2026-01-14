@@ -188,7 +188,6 @@ Shader "Unlit/HologramShader"
                 return OUT;
             }
 
-            // Fonction Fragment partagée
             half4 frag_shared(v2f IN, float3 colorFilter, bool isGhost)
             {
                 // Glitch inactif
@@ -218,14 +217,13 @@ Shader "Unlit/HologramShader"
                     float viewDot = saturate(dot(normalize(IN.normal), IN.viewDir));
                     float ghostMask = 1.0 - pow(viewDot, 4.0);
                     
-                    // Intensité finale augmentée pour rendre l'effet bien visible sur les bords
                     float intensity = lum * _ColorGlitchAmount * ghostMask * 2.0;
                     
                     col.rgb = colorFilter * intensity;
                     col.a = intensity;
                 }
 
-                // Contraste et alpha basé sur la luminance
+                // Main pass alpha adjustments
                 if (!isGhost)
                 {
                     fixed lum = Luminance(texcol.rgb);

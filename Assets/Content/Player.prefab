@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 7341207005403027670}
   - component: {fileID: 6262626708575942431}
   - component: {fileID: 3116555170320921214}
-  - component: {fileID: 5831785115773218322}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -51,9 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7847cc74144e3b90353e341ee412cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
-  canTakeDamage: 0
+  health: 40
+  maxHealth: 40
+  canTakeDamage: 1
   ShootAudioSource: {fileID: 3116555170320921214}
+  invulnerabilityDuration: 2
+  blinkSpeed: 0.1
+  playerRenderer: {fileID: 7341207005403027670}
 --- !u!114 &78626704127079234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +194,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 98c492be1c23b204ca8d9ddc4188c30c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.404
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -275,20 +278,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5831785115773218322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8015031868744359848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 426817cd5f4c40eca7b341c75fcbbc37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
-  health: 20
-  canTakeDamage: 1
-  invulnerabilityDuration: 2
-  blinkSpeed: 0.1
-  playerRenderer: {fileID: 7341207005403027670}

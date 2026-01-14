@@ -74,15 +74,15 @@ public class UIManager : MonoBehaviour
         passButton.gameObject.SetActive(false);
         damageOverlayImage.gameObject.SetActive(false);
         healthUIComponent.gameObject.SetActive(false);
-        // BossReactionComponent.gameObject.SetActive(false);
+        bossReactionComponent.gameObject.SetActive(false);
 
         selection = SelectionResult.None;
     }
 
-    public void ShowBossReaction(BossReactionData data)
+    public void ShowBossReaction(BossReactionData data, Action onReactionComplete = null)
     {
         bossReactionComponent.gameObject.SetActive(true);
-        bossReactionComponent.PlayBossReaction(data);
+        bossReactionComponent.PlayBossReaction(data, onReactionComplete);
     }
 
     public void ShowHealth(float currentHealth, float maxHealth)

@@ -13,9 +13,9 @@ public class TreeDissolveComponent : MonoBehaviour
     private void Start()
     {
         var rend = GetComponent<Renderer>();
-        if (rend != null)
+        if (rend)
         {
-            if (treeMaterial != null)
+            if (treeMaterial)
             {
                 rend.material = treeMaterial;
             }

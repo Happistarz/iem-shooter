@@ -16,6 +16,8 @@ public class MovementComponent : MonoBehaviour
 
     public void Update()
     {
+        if (Game.IsGamePaused) return;
+        
         if (!canMove)
             return;
 

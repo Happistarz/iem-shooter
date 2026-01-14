@@ -18,4 +18,5 @@ MonoBehaviour:
   DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
   Rarity: 1
   Health: 3
+  Damage: 3
   MoveSpeed: 5

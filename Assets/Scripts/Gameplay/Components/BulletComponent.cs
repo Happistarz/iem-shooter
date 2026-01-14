@@ -1,11 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BulletComponent : ActorComponent
 {
     public ActorComponent Owner;
-    public Vector3 Velocity;
-    public float MaxDuration = 5f;
-    public float SpawnTime;
+    public Vector3        Velocity;
+    public float          MaxDuration = 5f;
+    public float          SpawnTime;
+    public int            Damage = 1;
+
+    private Vector3 _localScale;
+
+    public BulletComponent prefab;
+
+    protected override void Awake()
+    {
+        _localScale = transform.localScale;
+    }
 
     private void OnEnable()
     {
@@ -24,7 +35,7 @@ public class BulletComponent : ActorComponent
             OnDeath();
             return;
         }
-        
+
         transform.position += Time.deltaTime * Velocity;
 
         var collision     = gameObject.GetComponentInSelfOrChildren<CollisionComponent>();
@@ -42,19 +53,34 @@ public class BulletComponent : ActorComponent
         var actor = otherCollision?.GetOwner();
 
         if (actor is null || actor == Owner) return;
-        actor.ApplyDamage(1);
+        if (actor is BulletComponent) return;
+
+        var isOwnerEnemy  = Owner is EnemyComponent or BossFightComponent;
+        var isTargetEnemy = actor is EnemyComponent or BossFightComponent;
+
+        if (isOwnerEnemy && isTargetEnemy) return;
+
+        actor.ApplyDamage(Damage);
         OnDeath();
     }
 
     public void Reset()
     {
-        Owner     = null;
-        Velocity  = Vector3.zero;
-        SpawnTime = Time.time;
+        Owner                = null;
+        Velocity             = Vector3.zero;
+        SpawnTime            = Time.time;
+        transform.localScale = _localScale;
     }
 
     protected override void OnDeath()
     {
-        Game.BulletPrefabPool.Release(this);
+        if (!prefab)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        var pool = Game.GetBulletPool(prefab);
+        pool.Release(this);
     }
 }

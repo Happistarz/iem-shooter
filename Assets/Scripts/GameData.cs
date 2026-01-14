@@ -12,7 +12,7 @@ public class GameData : ScriptableObject
     
     public PlayerComponent PlayerPrefab;
 
-    public AWeaponType StartingWeapon;
+    public WeaponData StartingWeapon;
     public List<EnemyData> Enemies;
     
     public BulletComponent BulletPrefab;

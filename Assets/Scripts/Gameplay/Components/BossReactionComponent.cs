@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -11,8 +13,16 @@ public class BossReactionComponent : MonoBehaviour
 
     private static readonly int _IDLE = Animator.StringToHash("Idle");
 
+    private Action _onReactionComplete;
+
     [Header("References")]
     public Material bossMaterial;
+
+    [Header("Settings")]
+    public float startAnimationOffset = 0.3f;
+
+    public float endAnimationOffset = 0.5f;
+    public float hiddenDelay        = 0.7f;
 
     private Animator _bossAnimator;
 
@@ -37,20 +47,11 @@ public class BossReactionComponent : MonoBehaviour
 
     private void Start()
     {
-        var bossObject                = GameObject.FindWithTag("BossHologram");
+        var bossObject = GameObject.FindWithTag("BossHologram");
+
         if (bossObject) _bossAnimator = bossObject.GetComponent<Animator>();
 
         ResetReactionState();
-        
-        // DEBUG: auto start reaction for testing
-        var debugReactionData = new BossReactionData
-        {
-            reactionType  = BossReactionType.Laugh,
-            reactionClip  = null,
-            reactionColor = Color.red,
-            doGlitch      = true
-        };
-        PlayBossReaction(debugReactionData);
     }
 
     private void Update()
@@ -87,11 +88,19 @@ public class BossReactionComponent : MonoBehaviour
         bossMaterial.SetColor(_COLOR, Color.white);
     }
 
-    public void PlayBossReaction(BossReactionData reactionData)
+    public void PlayBossReaction(BossReactionData reactionData, Action onReactionComplete = null)
     {
         if (!_bossAnimator) return;
 
+        bossMaterial.DOKill();
+        StopAllCoroutines();
+
+        _onReactionComplete = onReactionComplete;
         ResetReactionState();
+        
+        Game.MusicManager.FadeToVolume(Game.MusicManager.lowUIVolume, 0.5f);
+
+        reactionText.text = reactionData.reactionText;
 
         topRectFadeMove.FadeIn();
         bottomRectFadeMove.FadeIn();
@@ -103,11 +112,13 @@ public class BossReactionComponent : MonoBehaviour
 
         bossMaterial.DOFloat(0.0f, _DISSOLVE_AMOUNT, 0.3f).SetEase(Ease.OutQuad);
         bossMaterial.DOFloat(1.0f, _VERTICAL_FADE, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.2f)
-                    .OnComplete(() => { PlayReaction(reactionData); });
+                    .OnComplete(() => { StartCoroutine(PlayReaction(reactionData)); });
     }
 
-    private void PlayReaction(BossReactionData reactionData)
+    private IEnumerator PlayReaction(BossReactionData reactionData)
     {
+        yield return new WaitForSeconds(startAnimationOffset);
+
         if (_bossAnimator) _bossAnimator.ResetTrigger(_IDLE);
 
         audioSource.PlayOneShot(reactionData.reactionClip);
@@ -120,22 +131,33 @@ public class BossReactionComponent : MonoBehaviour
 
     public void FadeOutBossReaction()
     {
-        topRectFadeMove.FadeOut();
-        bottomRectFadeMove.FadeOut();
+        StartCoroutine(FadeOutAnimation());
+    }
+
+    private IEnumerator FadeOutAnimation()
+    {
+        if (!bossMaterial) yield break;
+        
+        Game.MusicManager.FadeToVolume(Game.MusicManager.musicVolume, 0.5f);
+
+        bossMaterial.DOFloat(1.0f, _DISSOLVE_AMOUNT, 0.7f).SetEase(Ease.InQuad);
+        bossMaterial.DOFloat(0.0f, _VERTICAL_FADE,   0.7f).SetEase(Ease.InQuad);
         renderTextureFadeMove.FadeOut();
         reactionTextFadeMove.FadeOut();
         reactionText.DOFade(0.0f, 0.2f).SetEase(Ease.OutQuad).SetDelay(0.0f);
 
-        // Start dissolve effect and vertical fade
-        if (!bossMaterial) return;
+        yield return new WaitForSeconds(endAnimationOffset);
 
-        bossMaterial.DOFloat(1.0f, _DISSOLVE_AMOUNT, 0.7f).SetEase(Ease.InQuad);
-        bossMaterial.DOFloat(0.0f, _VERTICAL_FADE, 0.7f).SetEase(Ease.InQuad)
-                    .OnComplete(() =>
-                    {
-                        if (_bossAnimator) _bossAnimator.SetTrigger(_IDLE);
-                        gameObject.SetActive(false);
-                    });
+        topRectFadeMove.FadeOut();
+        bottomRectFadeMove.FadeOut();
+
+        yield return new WaitForSeconds(hiddenDelay);
+
+        if (_bossAnimator) _bossAnimator.SetTrigger(_IDLE);
+        gameObject.SetActive(false);
+
+        _onReactionComplete?.Invoke();
+        _onReactionComplete = null;
     }
 
     private void GlitchEffect()
@@ -143,17 +165,20 @@ public class BossReactionComponent : MonoBehaviour
         if (!bossMaterial) return;
 
         DOTween.To(
-            () => bossMaterial.GetFloat(_EXTERNAL_GLITCH_ACTIVE),
-            x => bossMaterial.SetFloat(_EXTERNAL_GLITCH_ACTIVE, x),
-            1.0f,
-            0.5f).SetLoops(2, LoopType.Yoyo);
+                   () => bossMaterial.GetFloat(_EXTERNAL_GLITCH_ACTIVE),
+                   x => bossMaterial.SetFloat(_EXTERNAL_GLITCH_ACTIVE, x),
+                   1.0f,
+                   0.5f)
+               .SetLoops(2, LoopType.Yoyo)
+               ;
     }
 
     private void ChangeColorEffect(Color targetColor)
     {
         if (!bossMaterial) return;
 
-        bossMaterial.DOColor(targetColor, _COLOR, 0.5f);
+        bossMaterial.DOColor(targetColor, _COLOR, 0.5f)
+                    ;
     }
 
     private void OnDisable()

@@ -37,7 +37,11 @@ public class RainbowPulseWeaponEffect : IWeaponEffect
         var angle          = Time.time * _rotationSpeed;
         var shootDirection = Rotate(Vector3.forward, angle);
 
-        var bullet = Game.BulletPrefabPool.Get();
+        var pool   = Game.GetBulletPool(_prefab);
+        var bullet = pool.Get();
+        bullet.prefab = _prefab;
+
+        bullet.Reset();
         bullet.transform.position = origin;
         bullet.Velocity           = shootDirection * _bulletSpeed;
         bullet.Owner              = Owner;

@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.9659905
+      value: -1.965991
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.4951806
+      value: 4.495181
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48,10 +48,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7980078252452773520, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.026771069
+      objectReference: {fileID: 0}
+    - target: {fileID: -7980078252452773520, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0015041232
+      objectReference: {fileID: 0}
     - target: {fileID: -7351912675778115282, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5d92f8546212b414d8fc830bd338ba6f, type: 2}
+    - target: {fileID: -3175583606991227897, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3175583606991227897, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3175583606991227897, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3175583606991227897, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 475800242160784788, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -105,7 +129,7 @@ MonoBehaviour:
   hologramMaterial: {fileID: 2100000, guid: a8145922471f55a4f902d3c9e71ceaa2, type: 2}
   audioSource: {fileID: 9057085829355913851}
   glitchFrequency: 0.8
-  glitchProbability: 0.1
+  glitchProbability: 0.3
   glitchDuration: 0.3
 --- !u!82 &9057085829355913851
 AudioSource:
@@ -120,7 +144,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e8f3bbe7bda51fd478eb1c95ebf77910, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -216,7 +240,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: ec1c830cfb7761d48b043f65b1054b95, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

@@ -987,6 +987,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossReactionComponent
   bossMaterial: {fileID: 2100000, guid: a8145922471f55a4f902d3c9e71ceaa2, type: 2}
+  startAnimationOffset: 0.3
+  endAnimationOffset: 0.5
+  hiddenDelay: 0.7
   audioSource: {fileID: 356684479}
   topRectFadeMove: {fileID: 1334500757}
   bottomRectFadeMove: {fileID: 630417508}
@@ -1002,11 +1005,11 @@ AudioSource:
   m_GameObject: {fileID: 356684476}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 856185b94e080224cb943ba80c469907, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2037,7 +2040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0610a7ed05b24778a0ea0b0f1ac7f419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadeMoveUIComponent
-  moveEase: 6
+  moveEase: 26
   moveDuration: 0.4
   offsetY: 50
   delay: 0.3

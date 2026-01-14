@@ -118,7 +118,7 @@ Material:
     - _GlowTint: {r: 1, g: 1, b: 1, a: 1}
     - _HoloColor: {r: 0, g: 0.7, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainTint: {r: 1, g: 0, b: 0, a: 1}
+    - _MainTint: {r: 1, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0.35730076, b: 1, a: 1}
     - _ScanlineData: {r: 2.65, g: 12.17, b: 15.76, a: 1.69}
     - _TextureTint: {r: 1, g: 1, b: 1, a: 1}

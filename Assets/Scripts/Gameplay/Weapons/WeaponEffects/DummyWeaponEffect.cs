@@ -11,6 +11,7 @@ namespace Weapons
         public void Update(Vector3 origin, Vector3 direction)
         {
             // No effect
+            OnShoot?.Invoke();
         }
     }
 }

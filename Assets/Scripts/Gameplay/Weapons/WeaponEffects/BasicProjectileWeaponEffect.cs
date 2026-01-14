@@ -34,7 +34,11 @@ namespace Weapons
 
         private void Shoot(Vector3 origin, Vector3 direction)
         {
-            var bullet = Game.BulletPrefabPool.Get();
+            var pool = Game.GetBulletPool(_prefab);
+            var bullet = pool.Get();
+            bullet.prefab = _prefab;
+            
+            bullet.Reset();
             bullet.transform.position = origin;
             bullet.Velocity = direction * _speed;
             bullet.Owner = Owner;

@@ -16,18 +16,22 @@ MonoBehaviour:
   - Name: Wave 1
     Duration: 20
     TotalEnemies: 20
+    MoveBeamChance: 0
+    BeamIndex: -1
     Parts:
     - Threat: 0
       Percentage: 100
     BossReaction:
       reactionType: 0
-      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionClip: {fileID: 8300000, guid: c411b734d90ccf744b73239926c73819, type: 3}
       reactionText: T NUL
       reactionColor: {r: 1, g: 1, b: 1, a: 0}
       doGlitch: 0
   - Name: Wave 2
     Duration: 40
     TotalEnemies: 50
+    MoveBeamChance: 20
+    BeamIndex: -1
     Parts:
     - Threat: 0
       Percentage: 90
@@ -35,13 +39,15 @@ MonoBehaviour:
       Percentage: 10
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
       reactionText: HAHAAHAHHA
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1
   - Name: Wave 3
     Duration: 40
     TotalEnemies: 100
+    MoveBeamChance: 20
+    BeamIndex: 1
     Parts:
     - Threat: 0
       Percentage: 75
@@ -49,39 +55,43 @@ MonoBehaviour:
       Percentage: 25
     BossReaction:
       reactionType: 0
-      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionClip: {fileID: 8300000, guid: c411b734d90ccf744b73239926c73819, type: 3}
       reactionText: jkjkjkkjjkjkjkjk
       reactionColor: {r: 1, g: 0.8263446, b: 0, a: 0}
       doGlitch: 0
   - Name: Wave 4
     Duration: 60
-    TotalEnemies: 160
+    TotalEnemies: 145
+    MoveBeamChance: 100
+    BeamIndex: -1
     Parts:
     - Threat: 0
-      Percentage: 50
+      Percentage: 60
     - Threat: 1
-      Percentage: 40
+      Percentage: 35
     - Threat: 2
-      Percentage: 10
+      Percentage: 5
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
       reactionText: AZY C BON
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1
   - Name: Wave 5
     Duration: 100
-    TotalEnemies: 220
+    TotalEnemies: 180
+    MoveBeamChance: 70
+    BeamIndex: -1
     Parts:
     - Threat: 0
-      Percentage: 30
+      Percentage: 45
     - Threat: 1
-      Percentage: 50
+      Percentage: 45
     - Threat: 2
-      Percentage: 20
+      Percentage: 10
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
       reactionText: j'arrive XDDD
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1

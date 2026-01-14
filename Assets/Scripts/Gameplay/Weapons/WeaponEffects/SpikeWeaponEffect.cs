@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using UnityEngine;
 using Weapons;
 
@@ -28,16 +28,20 @@ public class SpikeWeaponEffect : IWeaponEffect
         _nextShotDelay += Time.deltaTime;
         if (!(_nextShotDelay > delayBetweenShots) || direction == Vector3.zero) return;
 
-        Shoot(origin, direction);
+        Shoot(origin);
         _nextShotDelay = 0;
     }
 
-    private void Shoot(Vector3 origin, Vector3 direction)
+    private void Shoot(Vector3 origin)
     {
         for (var i = 0; i < MultiShotCount; i++)
         {
-            var rotation = GetSpikeRotation(direction, i);
-            var bullet   = Game.BulletPrefabPool.Get();
+            var rotation = GetSpikeRotation(i);
+
+            var pool   = Game.GetBulletPool(BulletPrefab);
+            var bullet = pool.Get();
+            bullet.prefab = BulletPrefab;
+
             bullet.Reset();
             bullet.transform.position = origin;
             bullet.transform.rotation = rotation;
@@ -48,12 +52,11 @@ public class SpikeWeaponEffect : IWeaponEffect
         OnShoot?.Invoke();
     }
 
-    private Quaternion GetSpikeRotation(Vector3 direction, int index)
+    private Quaternion GetSpikeRotation(int index)
     {
         var angle = 360f / MultiShotCount * index;
 
-        var rotation = Quaternion.LookRotation(direction);
-        rotation *= Quaternion.Euler(0, angle, 0);
+        var rotation = Quaternion.AngleAxis(angle, Vector3.up);
         return rotation;
     }
 }

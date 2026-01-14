@@ -4,24 +4,34 @@ using UnityEngine;
 public class EnemySpawnAnimationComponent : MonoBehaviour
 {
     public MovementComponent movementComponent;
-    public Renderer          enemyRenderer;
 
-    public float animationDuration = 1.0f;
-    public float heightOffset      = 5.0f;
+    public float animationDuration = 1.2f;
+    public float heightOffset      = 90f;
+    
+    public TweenCallback OnSpawnComplete = null;
 
     private void OnEnable()
     {
-        if (movementComponent != null)
+        if (movementComponent)
         {
             movementComponent.canMove = false;
         }
 
         transform.DOMoveY(0.0f, animationDuration).From(heightOffset).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
-            if (movementComponent != null)
+            OnSpawnComplete?.Invoke();
+            if (OnSpawnComplete == null)
             {
-                movementComponent.canMove = true;
+                DefaultOnSpawnComplete();
             }
         });
+    }
+    
+    private void DefaultOnSpawnComplete()
+    {
+        if (movementComponent)
+        {
+            movementComponent.canMove = true;
+        }
     }
 }

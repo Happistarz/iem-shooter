@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4979367279112468863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3623282519023298485}
+  m_Layer: 0
+  m_Name: Pos2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3623282519023298485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4979367279112468863}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -48.1, y: -0.9000001, z: -7}
+  m_LocalScale: {x: 6.19, y: 38.66, z: 6.19}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6929415867997651291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5419355438858463180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6929415867997651291}
+  m_Layer: 0
+  m_Name: LaserBeamMovable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6929415867997651291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5419355438858463180}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5774113144555388525}
+  - {fileID: 271503521448444117}
+  - {fileID: 3623282519023298485}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7498875185019899000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271503521448444117}
+  m_Layer: 0
+  m_Name: Pos1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &271503521448444117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7498875185019899000}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -37.93, y: -0.9000001, z: 19.21}
+  m_LocalScale: {x: 6.19, y: 38.66, z: 6.19}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6929415867997651291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2082943353029669714
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6929415867997651291}
+    m_Modifications:
+    - target: {fileID: 5375760789707450059, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_Name
+      value: LaserBeam
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -37.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576102864053836400, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: firstPositionMarker
+      value: 
+      objectReference: {fileID: 271503521448444117}
+    - target: {fileID: 7576102864053836400, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: secondPositionMarker
+      value: 
+      objectReference: {fileID: 3623282519023298485}
+    - target: {fileID: 7576102864053836400, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: positionMarkers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576102864053836400, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: 'positionMarkers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 271503521448444117}
+    - target: {fileID: 7576102864053836400, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+      propertyPath: 'positionMarkers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3623282519023298485}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+--- !u!4 &5774113144555388525 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5533196327661014335, guid: 41176dd0d06b82d49b2a530c409959ee, type: 3}
+  m_PrefabInstance: {fileID: 2082943353029669714}
+  m_PrefabAsset: {fileID: 0}
