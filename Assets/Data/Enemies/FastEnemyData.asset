@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Fast Enemy
   Prefab: {fileID: 1018455437551777802, guid: a164123f4970f314c864634a7b39ce92, type: 3}
   Threat: 1
-  DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+  DeathSound: {fileID: 8300000, guid: 286416cf04574f540b619f8e4f975745, type: 3}
   Rarity: 5
   Health: 1
   Damage: 2

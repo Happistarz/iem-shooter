@@ -12,6 +12,9 @@ public class MusicManagerComponent : MonoBehaviour
     public float musicVolume;
     
     [Range(0f, 1f)]
+    public float bossVolume;
+    
+    [Range(0f, 1f)]
     public float lowUIVolume;
 
     private AudioSource _audioSource;

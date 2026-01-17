@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Advanced Enemy
   Prefab: {fileID: 8464274641385029406, guid: be77af6b736592d4b8f91500b3aa623e, type: 3}
   Threat: 2
-  DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+  DeathSound: {fileID: 8300000, guid: 286416cf04574f540b619f8e4f975745, type: 3}
   Rarity: 8
   Health: 3
   Damage: 2

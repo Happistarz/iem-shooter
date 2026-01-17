@@ -14,6 +14,7 @@ public class PlayerComponent : ActorComponent
     private CollisionComponent _collisionComponent;
     
     public AudioSource ShootAudioSource;
+    public AudioSource HitAudioSource;
 
     [Header("Player Health Settings")]
     public float invulnerabilityDuration = 2.0f;
@@ -70,6 +71,8 @@ public class PlayerComponent : ActorComponent
     {
         _isInvulnerable = true;
         canTakeDamage = false;
+        
+        HitAudioSource.Play();
 
         if (playerRenderer)
         {
@@ -171,11 +174,11 @@ public class PlayerComponent : ActorComponent
                 ApplyDamage(enemy.enemyData.Damage);
                 break;
             }
-            if (enemyActor is BossFightComponent)
-            {
-                ApplyDamage(1);
-                break;
-            }
+
+            if (enemyActor is not BossFightComponent) continue;
+            
+            ApplyDamage(1);
+            break;
         }
     }
     
@@ -196,5 +199,11 @@ public class PlayerComponent : ActorComponent
             _activeWeapons.Remove(weaponToRemove);
         }
         AddWeapon(newWeapon);
+    }
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        Game.UI.ShowGameOver(false);
     }
 }

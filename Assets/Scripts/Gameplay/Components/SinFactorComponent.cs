@@ -7,6 +7,7 @@ public class SinFactorComponent : MonoBehaviour
     [FormerlySerializedAs("Amplitude")] public float amplitude = 1f;
     
     public MovementComponent movement;
+    public Vector3 direction = Vector2.right;
 
     private float _phaseOffset;
 
@@ -27,9 +28,6 @@ public class SinFactorComponent : MonoBehaviour
         
         var sinFactor = GetSinFactor(Time.time);
 
-        var forward = transform.forward;
-        var right   = Vector3.Cross(forward, Vector3.up).normalized;
-
-        transform.position += right * (sinFactor * Time.deltaTime);
+        transform.position += direction.normalized * (sinFactor * Time.deltaTime);
     }
 }

@@ -27,12 +27,10 @@ public class BossReactionComponent : MonoBehaviour
     private Animator _bossAnimator;
 
     [Header("Audio")]
-    public AudioSource audioSource;
+    public AudioSource ReactionAudioSource;
+    public AudioSource WooshAudioSource;
 
     [Header("UI Elements")]
-    public FadeMoveUIComponent topRectFadeMove;
-
-    public FadeMoveUIComponent bottomRectFadeMove;
     public FadeMoveUIComponent renderTextureFadeMove;
     public FadeMoveUIComponent reactionTextFadeMove;
     public TextMeshProUGUI     reactionText;
@@ -102,8 +100,9 @@ public class BossReactionComponent : MonoBehaviour
 
         reactionText.text = reactionData.reactionText;
 
-        topRectFadeMove.FadeIn();
-        bottomRectFadeMove.FadeIn();
+        WooshAudioSource.Play();
+        
+        Game.UI.ShowBars();
         renderTextureFadeMove.FadeIn();
         reactionTextFadeMove.FadeIn();
         reactionText.DOFade(1.0f, 0.3f).SetEase(Ease.OutQuad).SetDelay(0.6f);
@@ -121,7 +120,7 @@ public class BossReactionComponent : MonoBehaviour
 
         if (_bossAnimator) _bossAnimator.ResetTrigger(_IDLE);
 
-        audioSource.PlayOneShot(reactionData.reactionClip);
+        ReactionAudioSource.PlayOneShot(reactionData.reactionClip);
         if (reactionData.doGlitch) GlitchEffect();
         ChangeColorEffect(reactionData.reactionColor);
         _bossAnimator.SetTrigger(reactionData.reactionType.ToString());
@@ -139,17 +138,21 @@ public class BossReactionComponent : MonoBehaviour
         if (!bossMaterial) yield break;
         
         Game.MusicManager.FadeToVolume(Game.MusicManager.musicVolume, 0.5f);
+        
+        WooshAudioSource.Play();
 
         bossMaterial.DOFloat(1.0f, _DISSOLVE_AMOUNT, 0.7f).SetEase(Ease.InQuad);
         bossMaterial.DOFloat(0.0f, _VERTICAL_FADE,   0.7f).SetEase(Ease.InQuad);
+
+        yield return new WaitForSeconds(0.2f);
+        
         renderTextureFadeMove.FadeOut();
         reactionTextFadeMove.FadeOut();
         reactionText.DOFade(0.0f, 0.2f).SetEase(Ease.OutQuad).SetDelay(0.0f);
 
         yield return new WaitForSeconds(endAnimationOffset);
 
-        topRectFadeMove.FadeOut();
-        bottomRectFadeMove.FadeOut();
+        Game.UI.HideBars();
 
         yield return new WaitForSeconds(hiddenDelay);
 

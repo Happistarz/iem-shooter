@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Slow Enemy
   Prefab: {fileID: 5908054325171983805, guid: 38d9599a711ac884188e58fd6749d946, type: 3}
   Threat: 0
-  DeathSound: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+  DeathSound: {fileID: 8300000, guid: 145fc0b9fddf3fa4eb01322354f6b152, type: 3}
   Rarity: 1
   Health: 3
   Damage: 3

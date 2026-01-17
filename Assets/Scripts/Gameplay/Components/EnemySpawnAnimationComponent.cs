@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class EnemySpawnAnimationComponent : MonoBehaviour
@@ -7,7 +8,7 @@ public class EnemySpawnAnimationComponent : MonoBehaviour
 
     public float animationDuration = 1.2f;
     public float heightOffset      = 90f;
-    
+
     public TweenCallback OnSpawnComplete = null;
 
     private void OnEnable()
@@ -26,7 +27,7 @@ public class EnemySpawnAnimationComponent : MonoBehaviour
             }
         });
     }
-    
+
     private void DefaultOnSpawnComplete()
     {
         if (movementComponent)

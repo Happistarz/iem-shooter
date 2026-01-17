@@ -641,8 +641,8 @@ MonoBehaviour:
   spawnInterval: 1.5
   spawnIntervalSecondPhase: 3
   audioSource: {fileID: 269212765}
-  spawnClip: {fileID: 8300000, guid: e8f3bbe7bda51fd478eb1c95ebf77910, type: 3}
-  phaseChangeClip: {fileID: 8300000, guid: 8870614321507fb4c837b4f49d4e080f, type: 3}
+  spawnClip: {fileID: 8300000, guid: a8be60876e8bfde42abb400638ed25fd, type: 3}
+  phaseChangeClip: {fileID: 8300000, guid: f8e85264934c99443a2c5378bc724d5d, type: 3}
 --- !u!114 &269212763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,8 +2300,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   WaveMusicClip: {fileID: 8300000, guid: 439e2661610a43c4f8b9ce888f30138c, type: 3}
   BossMusicClip: {fileID: 8300000, guid: f5042f1761f675a4dab25da132951035, type: 3}
-  musicVolume: 0.5
-  lowUIVolume: 0.3
+  musicVolume: 0.2
+  bossVolume: 0.6
+  lowUIVolume: 0.1
 --- !u!1 &1567050476
 GameObject:
   m_ObjectHideFlags: 0

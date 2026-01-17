@@ -23,8 +23,8 @@ MonoBehaviour:
       Percentage: 100
     BossReaction:
       reactionType: 0
-      reactionClip: {fileID: 8300000, guid: c411b734d90ccf744b73239926c73819, type: 3}
-      reactionText: T NUL
+      reactionClip: {fileID: 8300000, guid: a8be60876e8bfde42abb400638ed25fd, type: 3}
+      reactionText: AHAHA TU NE SURVIVRAS PAS PLUS LONGTEMPS !!!
       reactionColor: {r: 1, g: 1, b: 1, a: 0}
       doGlitch: 0
   - Name: Wave 2
@@ -39,8 +39,8 @@ MonoBehaviour:
       Percentage: 10
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
-      reactionText: HAHAAHAHHA
+      reactionClip: {fileID: 8300000, guid: f8e85264934c99443a2c5378bc724d5d, type: 3}
+      reactionText: ALLEZ MES MINIONS !!!!
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1
   - Name: Wave 3
@@ -55,8 +55,8 @@ MonoBehaviour:
       Percentage: 25
     BossReaction:
       reactionType: 0
-      reactionClip: {fileID: 8300000, guid: c411b734d90ccf744b73239926c73819, type: 3}
-      reactionText: jkjkjkkjjkjkjkjk
+      reactionClip: {fileID: 8300000, guid: a8be60876e8bfde42abb400638ed25fd, type: 3}
+      reactionText: AHAHAHA FINI DE JOUEUR ! ADIEU !!!
       reactionColor: {r: 1, g: 0.8263446, b: 0, a: 0}
       doGlitch: 0
   - Name: Wave 4
@@ -73,8 +73,8 @@ MonoBehaviour:
       Percentage: 5
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
-      reactionText: AZY C BON
+      reactionClip: {fileID: 8300000, guid: f8e85264934c99443a2c5378bc724d5d, type: 3}
+      reactionText: COMMENT RESISTES TU ???!!!
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1
   - Name: Wave 5
@@ -91,7 +91,7 @@ MonoBehaviour:
       Percentage: 10
     BossReaction:
       reactionType: 1
-      reactionClip: {fileID: 8300000, guid: 284ed04477f251c448c4de5a7594a8e4, type: 3}
-      reactionText: j'arrive XDDD
+      reactionClip: {fileID: 8300000, guid: f8e85264934c99443a2c5378bc724d5d, type: 3}
+      reactionText: "TU M'AS ENERVE !! J'ARRIVE \xE8_\xE9"
       reactionColor: {r: 1, g: 0, b: 0, a: 0}
       doGlitch: 1

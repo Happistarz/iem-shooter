@@ -199,6 +199,7 @@ public class GameLoop : MonoBehaviour
         Game.IsGamePaused = true;
         _inBossFight      = true;
         
+        Game.MusicManager.FadeToVolume(Game.MusicManager.bossVolume, 1.0f);
         Game.MusicManager.PlayBossMusic();
         yield return new WaitForSeconds(2.0f);
 
@@ -259,6 +260,10 @@ public class GameLoop : MonoBehaviour
         {
             terrainCorruption.RestoreTerrain();
         }
+        
+        Game.UI.ShowGameOver(true);
+        
+        Game.MusicManager.FadeOutMusic(2.0f);
     }
 
     public void SpawnBossEnemy()

@@ -47,6 +47,10 @@ public class UIManager : MonoBehaviour
 
     [FormerlySerializedAs("BossReactionComponent")]
     public BossReactionComponent bossReactionComponent;
+    
+    public TextMeshProUGUI gameOverText;
+    public FadeMoveUIComponent topBar;
+    public FadeMoveUIComponent bottomBar;
 
     [FormerlySerializedAs("Selection")] public SelectionResult selection;
 
@@ -72,9 +76,15 @@ public class UIManager : MonoBehaviour
         upgradeButtonA.gameObject.SetActive(false);
         upgradeButtonB.gameObject.SetActive(false);
         passButton.gameObject.SetActive(false);
+        
         damageOverlayImage.gameObject.SetActive(false);
         healthUIComponent.gameObject.SetActive(false);
         bossReactionComponent.gameObject.SetActive(false);
+        
+        gameOverText.gameObject.SetActive(false);
+        
+        topBar.gameObject.SetActive(false);
+        bottomBar.gameObject.SetActive(false);
 
         selection = SelectionResult.None;
     }
@@ -104,6 +114,32 @@ public class UIManager : MonoBehaviour
         damageOverlayImage.DOFade(0f, 0.5f).SetEase(Ease.InQuad);
         yield return new WaitForSeconds(0.5f);
         damageOverlayImage.gameObject.SetActive(false);
+    }
+
+    public void ShowGameOver(bool win)
+    {
+        gameOverText.gameObject.SetActive(true);
+        gameOverText.text = win ? "You Win!" : "Game Over";
+        
+        ShowBars();
+    }
+
+    public void ShowBars()
+    {
+        topBar.gameObject.SetActive(true);
+        bottomBar.gameObject.SetActive(true);
+        
+        topBar.FadeIn();
+        bottomBar.FadeIn();
+    }
+    
+    public void HideBars()
+    {
+        topBar.FadeOut();
+        bottomBar.FadeOut();
+        
+        topBar.gameObject.SetActive(false);
+        bottomBar.gameObject.SetActive(false);
     }
 
     public void ShowTitle()

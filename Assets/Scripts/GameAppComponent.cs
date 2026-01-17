@@ -8,10 +8,8 @@ public class GameAppComponent : MonoBehaviour
 {
     private GameLoop _gameLoop;
     
-    public void Start()
+    public void InitializeGame()
     {
-        DontDestroyOnLoad(gameObject);
-        
         SceneManager.LoadScene("UI", LoadSceneMode.Additive);
         
         var gameData = Addressables.LoadAssetAsync<GameData>("Assets/Data/GameData.asset").WaitForCompletion();
@@ -35,6 +33,7 @@ public class GameAppComponent : MonoBehaviour
 
     private void Update()
     {
+        if (!_gameLoop) return;
         _gameLoop.Update();
     }
 }
