@@ -10,6 +10,8 @@ public class GameAppComponent : MonoBehaviour
     
     public void InitializeGame()
     {
+        transform.SetParent(GameApp.GetPersistentRoot().transform);
+        
         SceneManager.LoadScene("UI", LoadSceneMode.Additive);
         
         var gameData = Addressables.LoadAssetAsync<GameData>("Assets/Data/GameData.asset").WaitForCompletion();
@@ -23,17 +25,32 @@ public class GameAppComponent : MonoBehaviour
         DOTween.SetTweensCapacity(2000, 500);
         
         var audioManagerObject = new GameObject("AudioManager");
+        audioManagerObject.transform.SetParent(transform);
         Game.AudioManager = audioManagerObject.AddComponent<SoundManager>();
         Game.AudioManager.Init();
 
         var gameLoopObject = new GameObject("GameLoop");
+        gameLoopObject.transform.SetParent(transform);
         _gameLoop = gameLoopObject.AddComponent<GameLoop>();
         _gameLoop.Init();
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ReturnToMenu();
+            return;
+        }
+        
         if (!_gameLoop) return;
         _gameLoop.Update();
+    }
+
+    private void ReturnToMenu()
+    {
+        DOTween.KillAll();
+        
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 }

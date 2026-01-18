@@ -69,16 +69,25 @@ Shader "Unlit/HologramShader"
             // Shared Uniforms
             uniform float _ExternalGlitchActive;
 
+            // Color and Texture
             uniform half4 _MainTint;
             uniform half4 _TextureTint;
             uniform float _TextureInfluence;
             uniform half4 _GlowTint;
+
+            // Fresnel
             uniform float _RimPower;
             uniform float _RimThreshold;
+
+            // Alpha
             uniform float _Contrast;
             uniform float _BrightnessToAlpha;
+
+            // Main Texture
             uniform sampler2D _MainTex;
             uniform float4 _MainTex_ST;
+
+            // Flicker
             uniform sampler2D _FlickerTex;
             uniform float _FlickerIntensity;
             uniform float _FlickerSpeed;

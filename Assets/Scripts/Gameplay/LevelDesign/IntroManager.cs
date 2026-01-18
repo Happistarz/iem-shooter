@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Unity.Cinemachine;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,14 +8,14 @@ public class IntroManager : MonoBehaviour
     private GameAppComponent _gameApp;
     public string gameSceneName = "Niveau 1";
     
-    private bool _transitionStarted = false;
+    private bool _transitionStarted;
     
-    private void Start()
+    private void Update()
     {
-        _gameApp = FindFirstObjectByType<GameAppComponent>();
-        
-        if (!_gameApp)
-            Debug.LogError("GameAppComponent not found in the scene.");
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ReturnToMenu();
+        }
     }
     
     public void StartGameTransition()
@@ -28,7 +28,8 @@ public class IntroManager : MonoBehaviour
     
     private IEnumerator LoadGameSceneCoroutine()
     {
-        DontDestroyOnLoad(_gameApp.gameObject);
+        var gameAppObject = new GameObject("GameApp");
+        _gameApp = gameAppObject.AddComponent<GameAppComponent>();
         
         var asyncLoad = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive);
         while (asyncLoad is { isDone: false })
@@ -39,5 +40,13 @@ public class IntroManager : MonoBehaviour
         SceneManager.UnloadSceneAsync("Intro");
         
         _gameApp.InitializeGame();
+    }
+    
+    private void ReturnToMenu()
+    {
+        StopAllCoroutines();
+        
+        DOTween.KillAll();
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 }

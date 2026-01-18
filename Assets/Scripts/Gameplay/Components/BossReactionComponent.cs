@@ -157,10 +157,11 @@ public class BossReactionComponent : MonoBehaviour
         yield return new WaitForSeconds(hiddenDelay);
 
         if (_bossAnimator) _bossAnimator.SetTrigger(_IDLE);
-        gameObject.SetActive(false);
 
         _onReactionComplete?.Invoke();
         _onReactionComplete = null;
+        
+        gameObject.SetActive(false);
     }
 
     private void GlitchEffect()

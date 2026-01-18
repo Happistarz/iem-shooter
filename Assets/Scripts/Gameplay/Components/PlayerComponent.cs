@@ -204,6 +204,6 @@ public class PlayerComponent : ActorComponent
     protected override void OnDeath()
     {
         base.OnDeath();
-        Game.UI.ShowGameOver(false);
+        GameLoop.Instance.OnPlayerDefeated();
     }
 }

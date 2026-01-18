@@ -22,6 +22,27 @@ public static class Game
     public static readonly Dictionary<EnemyData, PrefabPool<EnemyComponent>> ENEMY_PREFAB_POOLS = new();
     
     public static readonly Dictionary<BulletComponent, PrefabPool<BulletComponent>> BULLET_PREFAB_POOLS = new();
+    
+    public static void Cleanup()
+    {
+        Data = null;
+        IsGamePaused = false;
+        UI = null;
+        Player = null;
+        Enemies = null;
+        TractorBeamsController = null;
+        CollisionSystem = null;
+        AudioManager = null;
+        MusicManager = null;
+        
+        ENEMY_PREFAB_POOLS.Clear();
+        BULLET_PREFAB_POOLS.Clear();
+        
+        if (GameLoop.Instance)
+        {
+            GameLoop.Instance = null;
+        }
+    }
 
     public static EnemyComponent GetClosestEnemy(Vector3 position)
     {

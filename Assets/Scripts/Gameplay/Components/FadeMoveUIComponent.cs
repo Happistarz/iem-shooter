@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -37,11 +38,14 @@ public class FadeMoveUIComponent : MonoBehaviour
         _rectTransform.DOAnchorPosY(_targetY, moveDuration).SetEase(moveEase).SetDelay(delay);
     }
 
-    public void FadeOut()
+    public void FadeOut(Action onComplete = null)
     {
         if (!_rectTransform) return;
 
         _rectTransform.DOKill();
-        _rectTransform.DOAnchorPosY(_startY, moveDuration).SetEase(moveEase).SetDelay(delayFadeOut);
+        _rectTransform.DOAnchorPosY(_startY, moveDuration)
+                      .SetEase(moveEase)
+                      .SetDelay(delayFadeOut)
+                      .OnComplete(() => onComplete?.Invoke());
     }
 }

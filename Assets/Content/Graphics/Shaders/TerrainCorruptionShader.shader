@@ -55,17 +55,24 @@ Shader "Custom/TerrainModifierShader"
                 LIGHTING_COORDS(3,4)
             };
 
+            // Main Texture and Color
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+
+            // Lighting
             float _Glossiness;
 
+            // Corruption Settings
             float _CorruptionAmount;
+            float4 _CorruptionColor;
+
+            // Dissolve Noise Settings
             sampler2D _NoiseTexture;
             float4 _NoiseTexture_ST;
             float _NoiseScale;
-            float4 _CorruptionColor;
 
+            // Dissolve Edge Settings
             float4 _EdgeColor;
             float _EdgeThickness;
 
@@ -92,30 +99,28 @@ Shader "Custom/TerrainModifierShader"
 
                 float lightIntensity = ceil(NdotL * _Glossiness) / _Glossiness;
 
+                // Apply attenuation
                 float attenuation = LIGHT_ATTENUATION(IN);
                 lightIntensity *= attenuation;
 
                 float4 texColor = tex2D(_MainTex, IN.uv);
                 float4 baseColor = texColor * lightIntensity * _Color;
 
-                // Use WorldPos for noise but allow scaling via Tiling/Offset in inspector + global scale
+                // Corruption Effect
                 float2 noiseUV = IN.worldPos.xz * _NoiseScale * _NoiseTexture_ST.xy + _NoiseTexture_ST.zw;
                 float noiseValue = tex2D(_NoiseTexture, noiseUV).r;
 
                 float corruptionMask = step(noiseValue, _CorruptionAmount);
                 
-                // Fix edge appearing when amount is 0
                 float edgeMask = (step(noiseValue, _CorruptionAmount + _EdgeThickness) - corruptionMask) * step(0.001, _CorruptionAmount);
 
-                // Corruption Logic:
-                // Calculate luminance to preserve texture details but allow complete color change
+                // Convert to grayscale for corrupted effect
                 float luminance = dot(texColor.rgb, float3(0.3, 0.59, 0.11));
                 float4 corruptedColor = float4(luminance, luminance, luminance, 1) * _CorruptionColor * lightIntensity;
                 
-                // Lerp allows darkening or changing color completely (Green -> Red) without making it Orange
                 float4 finalColor = lerp(baseColor, corruptedColor, corruptionMask);
-                
-                // Add Edge on top
+
+                // Apply Edge Color
                 finalColor.rgb += _EdgeColor.rgb * edgeMask;
 
                 UNITY_APPLY_FOG(IN.fogCoord, finalColor);

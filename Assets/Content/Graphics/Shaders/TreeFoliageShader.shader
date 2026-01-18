@@ -5,8 +5,8 @@ Shader "Custom/CelShaderFoliageWave"
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
         _Glossiness ("Glossiness", Float) = 32
-        [HDR]
-        _RimColor ("Rim Color", Color) = (1,1,1,1)
+        
+        [HDR] _RimColor ("Rim Color", Color) = (1,1,1,1)
         _RimPower ("Rim Power", Range(0, 1)) = 0.7
         _RimThreshold ("Rim Threshold", Range(0, 1)) = 0.5
         
@@ -61,25 +61,31 @@ Shader "Custom/CelShaderFoliageWave"
                 float3 objPos : TEXCOORD2;
             };
 
+            // Main Texture and Color
             sampler2D _MainTex;
             float4 _MainTex_ST;
             fixed4 _Color;
 
+            // Lighting
             float _Glossiness;
 
+            // Rim Lighting
             float4 _RimColor;
             float _RimPower;
             float _RimThreshold;
-            
+
+            // Wave Settings
             float _WaveAmplitude;
             float _WaveFrequency;
             float _WaveSpeed;
 
+            // Dissolve Settings
             float _DissolveAmount;
             float4 _DissolveColor;
             float _DissolveEdgeWidth;
             float _DissolveHeightMax;
-            
+
+            // Dissolve Noise Settings
             sampler2D _DissolveNoiseTex;
             float4 _DissolveNoiseTex_ST;
             float _DissolveNoiseScale;
@@ -108,15 +114,12 @@ Shader "Custom/CelShaderFoliageWave"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                // Dissolve Logic
                 float noise = tex2D(_DissolveNoiseTex, i.uv * _DissolveNoiseScale).r;
                 
-                // Adjust range to ensure full dissolve even with noise
                 float minHeight = -_DissolveNoiseStrength - 0.5;
                 float cutHeight = lerp(_DissolveHeightMax, minHeight, _DissolveAmount);
                 
-                // Perturb the height check with noise
-                float noisyHeight = i.objPos.y - (noise * _DissolveNoiseStrength);
+                float noisyHeight = i.objPos.y - noise * _DissolveNoiseStrength;
                 
                 if (noisyHeight > cutHeight) discard;
 

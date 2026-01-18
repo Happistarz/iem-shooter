@@ -18,6 +18,8 @@ public class BossFightComponent : ActorComponent
 
     public AudioClip spawnClip;
     public AudioClip phaseChangeClip;
+    
+    public GameObject phaseOneIndicator;
 
     private enum FightPhase
     {
@@ -42,7 +44,11 @@ public class BossFightComponent : ActorComponent
 
         var spawnAnimation = GetComponent<EnemySpawnAnimationComponent>();
 
-        if (spawnAnimation) spawnAnimation.OnSpawnComplete += () => { _isInitialized = true; };
+        if (spawnAnimation) spawnAnimation.OnSpawnComplete += () =>
+        {
+            _isInitialized = true;
+            phaseOneIndicator.SetActive(true);
+        };
 
         // Initialize and set up the boss weapon
         if (!bossWeapon) return;
@@ -103,6 +109,7 @@ public class BossFightComponent : ActorComponent
         // Transition to Phase Two
         _currentPhase              = FightPhase.PhaseTwo;
         _movementComponent.canMove = true;
+        phaseOneIndicator.SetActive(false);
         audioSource.PlayOneShot(phaseChangeClip);
     }
 

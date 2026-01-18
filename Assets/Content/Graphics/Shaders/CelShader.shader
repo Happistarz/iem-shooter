@@ -5,8 +5,8 @@ Shader "Unlit/CelShader"
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
         _Glossiness ("Glossiness", Float) = 32
-        [HDR]
-        _RimColor ("Rim Color", Color) = (1,1,1,1)
+        
+        [HDR] _RimColor ("Rim Color", Color) = (1,1,1,1)
         _RimPower ("Rim Power", Range(0, 1)) = 0.7
         _RimThreshold ("Rim Threshold", Range(0, 1)) = 0.5
     }

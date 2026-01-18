@@ -135,11 +135,14 @@ public class UIManager : MonoBehaviour
     
     public void HideBars()
     {
-        topBar.FadeOut();
-        bottomBar.FadeOut();
-        
-        topBar.gameObject.SetActive(false);
-        bottomBar.gameObject.SetActive(false);
+        topBar.FadeOut(() =>
+        {
+            gameObject.SetActive(false);
+        });
+        bottomBar.FadeOut(() =>
+        {
+            gameObject.SetActive(false);
+        });
     }
 
     public void ShowTitle()

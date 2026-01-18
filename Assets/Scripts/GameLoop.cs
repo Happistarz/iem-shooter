@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class GameLoop : MonoBehaviour
 {
     // Singleton
-    public static GameLoop Instance { get; private set; }
+    public static GameLoop Instance { get; set; }
     
     //Wave state
     [FormerlySerializedAs("CurrentWaveIndex")]
@@ -241,27 +241,41 @@ public class GameLoop : MonoBehaviour
         Game.IsGamePaused = true;
         _isGameActive    = false;
 
-        StartCoroutine(HandleGameCompleted());
+        StartCoroutine(HandleGameCompleted(true));
     }
     
-    private IEnumerator HandleGameCompleted()
+    public void OnPlayerDefeated()
     {
-        // clean up enemies
-        foreach (var enemy in Game.Enemies.ToList())
-        {
-            enemy.ApplyDamage(enemy.health);
-        }
-        
-        yield return new WaitForSeconds(3.0f);
+        Game.IsGamePaused = true;
+        _isGameActive    = false;
 
-        Game.TractorBeamsController.DeactivateBeams();
-        var terrainCorruption = FindFirstObjectByType<TerrainCorruptionComponent>();
-        if (terrainCorruption)
+        StartCoroutine(HandleGameCompleted(false));
+    }
+    
+    private static IEnumerator HandleGameCompleted(bool win)
+    {
+        if (win)
         {
-            terrainCorruption.RestoreTerrain();
+            // clean up enemies
+            foreach (var enemy in Game.Enemies.ToList())
+            {
+                enemy.ApplyDamage(enemy.health);
+            }
+            
+            yield return new WaitForSeconds(3.0f);
+
+            Game.TractorBeamsController.DeactivateBeams();
+            var terrainCorruption = FindFirstObjectByType<TerrainCorruptionComponent>();
+            if (terrainCorruption)
+            {
+                terrainCorruption.RestoreTerrain();
+            }
+        } else
+        {
+            yield return new WaitForSeconds(2.0f);
         }
         
-        Game.UI.ShowGameOver(true);
+        Game.UI.ShowGameOver(win);
         
         Game.MusicManager.FadeOutMusic(2.0f);
     }
