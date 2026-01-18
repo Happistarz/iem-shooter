@@ -108,7 +108,87 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6918088575983135478}
+    - targetCorrespondingSourceObject: {fileID: 8160175196479002786, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3796558017245387318}
+    - targetCorrespondingSourceObject: {fileID: 8160175196479002786, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6562295035574216610}
+    - targetCorrespondingSourceObject: {fileID: 330527823033461916, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2496206557851547795}
+    - targetCorrespondingSourceObject: {fileID: 330527823033461916, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 667498266174657023}
   m_SourcePrefab: {fileID: 100100000, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+--- !u!1 &2750067684077981990 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8160175196479002786, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+  m_PrefabInstance: {fileID: 6274912755206736260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3796558017245387318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2750067684077981990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab855b19be364680823211c3d8eea924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramMaterialRegistration
+--- !u!114 &6562295035574216610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2750067684077981990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97134d3ac914af4b4909ef6137fd1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramRainbowEffect
+  baseIntensity: 0.3
+  movementBoost: 1.5
+  movementSensitivity: 0.1
+  boostFadeTime: 0.5
+  smoothing: 0.8
+--- !u!1 &6017568496993477912 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 330527823033461916, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}
+  m_PrefabInstance: {fileID: 6274912755206736260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2496206557851547795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017568496993477912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab855b19be364680823211c3d8eea924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramMaterialRegistration
+--- !u!114 &667498266174657023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017568496993477912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97134d3ac914af4b4909ef6137fd1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramRainbowEffect
+  baseIntensity: 0.3
+  movementBoost: 1.5
+  movementSensitivity: 0.1
+  boostFadeTime: 0.5
+  smoothing: 0.8
 --- !u!1 &6617369183575831765 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe0cbca06ed1414f9abcc657479e03b, type: 3}

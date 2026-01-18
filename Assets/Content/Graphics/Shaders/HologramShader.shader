@@ -49,6 +49,16 @@ Shader "Unlit/HologramShader"
 
         [Header(Random)]
         _RandomOffset("Random Offset", Float) = 0.0
+
+        [Header(Rainbow Effect)]
+        [Toggle] _RainbowEnabled("Rainbow Enabled", Float) = 0
+        _MousePos("Mouse Position (Screen UV)", Vector) = (0.5, 0.5, 0, 0)
+        _RainbowIntensity("Rainbow Intensity", Range(0.0, 1.0)) = 0.3
+        _RainbowWaveSpeed("Rainbow Wave Speed", Range(0.0, 5.0)) = 1.5
+        _RainbowWaveScale("Rainbow Wave Scale", Range(0.1, 10.0)) = 3.0
+        _RainbowDistortion("Rainbow Distortion", Range(0.0, 2.0)) = 0.5
+        _RainbowRadius("Rainbow Radius", Range(0.1, 3.0)) = 1.2
+        _RainbowSaturation("Rainbow Saturation", Range(0.0, 1.0)) = 0.7
         
     }
 
@@ -122,6 +132,16 @@ Shader "Unlit/HologramShader"
             // Random
             uniform float _RandomOffset;
 
+            // Rainbow Effect
+            uniform float _RainbowEnabled;
+            uniform float4 _MousePos;
+            uniform float _RainbowIntensity;
+            uniform float _RainbowWaveSpeed;
+            uniform float _RainbowWaveScale;
+            uniform float _RainbowDistortion;
+            uniform float _RainbowRadius;
+            uniform float _RainbowSaturation;
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -143,6 +163,75 @@ Shader "Unlit/HologramShader"
             float hash(float n)
             {
                 return frac(sin(n) * 43758.5453123);
+            }
+
+            float3 hsv2rgb(float3 c)
+            {
+                float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+                float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+                return c.z * lerp(K.xxx, saturate(p - K.xxx), c.y);
+            }
+
+            float2 hash2(float2 p)
+            {
+                p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
+                return frac(sin(p) * 43758.5453);
+            }
+
+            float simplexNoise2D(float2 p)
+            {
+                const float K1 = 0.366025404; // (sqrt(3)-1)/2
+                const float K2 = 0.211324865; // (3-sqrt(3))/6
+                
+                float2 i = floor(p + (p.x + p.y) * K1);
+                float2 a = p - i + (i.x + i.y) * K2;
+                float2 o = a.x > a.y ? float2(1.0, 0.0) : float2(0.0, 1.0);
+                float2 b = a - o + K2;
+                float2 c = a - 1.0 + 2.0 * K2;
+                
+                float3 h = max(0.5 - float3(dot(a, a), dot(b, b), dot(c, c)), 0.0);
+                float3 n = h * h * h * h * float3(dot(a, hash2(i) - 0.5), dot(b, hash2(i + o) - 0.5), dot(c, hash2(i + 1.0) - 0.5));
+                
+                return dot(n, float3(70.0, 70.0, 70.0));
+            }
+
+            float3 calculateRainbowEffect(float2 screenUV, float3 worldPos, float time)
+            {
+                if (_RainbowEnabled < 0.5 || _RainbowIntensity < 0.001) return float3(0, 0, 0);
+                
+                float2 mouseUV = _MousePos.xy;
+                
+                float noiseTime = time * 0.3;
+                float2 noiseCoord = screenUV * 3.0 + float2(noiseTime, noiseTime * 0.7);
+                float distortionNoise = simplexNoise2D(noiseCoord) * _RainbowDistortion;
+                float distortionNoise2 = simplexNoise2D(noiseCoord * 1.5 + 100.0) * _RainbowDistortion * 0.5;
+                
+                float2 diff = screenUV - mouseUV;
+                float dist = length(diff) + distortionNoise * 0.1;
+                
+                float falloff = 1.0 - smoothstep(0.0, _RainbowRadius, dist);
+                falloff = pow(falloff, 1.5);
+                
+                float xInfluence = mouseUV.x;
+                float yInfluence = mouseUV.y;
+                
+                float3 colorShift;
+                colorShift.r = xInfluence;
+                colorShift.g = yInfluence;
+                colorShift.b = 1.0 - (xInfluence * 0.5 + yInfluence * 0.5);
+                
+                float wave = dist * _RainbowWaveScale - time * _RainbowWaveSpeed;
+                float irregularWave = sin(wave * 6.28318) * 0.5 + 0.5;
+                irregularWave += sin(wave * 2.0 + distortionNoise2 * 3.0) * 0.3;
+                irregularWave += simplexNoise2D(float2(wave, dist + time * 0.5) * 2.0) * 0.2;
+                irregularWave = saturate(irregularWave);
+                
+                float shimmer = sin(time * 8.0 + screenUV.x * 20.0 + screenUV.y * 15.0) * 0.1 + 0.9;
+                float3 rainbowColor = lerp(float3(1,1,1), colorShift, _RainbowSaturation);
+                
+                float intensity = irregularWave * falloff * shimmer * _RainbowIntensity;
+                
+                return rainbowColor * intensity;
             }
 
             v2f vert_shared(appdata IN, float ghostOffsetDir, out float4 outpos)
@@ -217,6 +306,10 @@ Shader "Unlit/HologramShader"
 
                 half4 baseColor = lerp(_MainTint, texColor, _TextureInfluence);
                 half4 col = lerp(baseColor, _GlowTint, fresnel);
+
+                // Rainbow effect
+                float2 screenUV = IN.screenPos.xy / _ScreenParams.xy;
+                float3 rainbowEffect = calculateRainbowEffect(screenUV, IN.worldPos, _Time.y + _RandomOffset);
                 
                 if (isGhost)
                 {
@@ -235,6 +328,8 @@ Shader "Unlit/HologramShader"
                 // Main pass alpha adjustments
                 if (!isGhost)
                 {
+                    col.rgb = col.rgb + rainbowEffect * (1.0 - Luminance(rainbowEffect) * 0.3);
+                    
                     fixed lum = Luminance(texcol.rgb);
                     lum = pow(lum, _Contrast);
                     col.a *= lerp(1.0, sqrt(lum), _BrightnessToAlpha);

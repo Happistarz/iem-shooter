@@ -79,6 +79,13 @@ Material:
     - _MinAlpha: 1
     - _MinimumAlpha: 0.99
     - _Noise: 1
+    - _RainbowDistortion: 0.5
+    - _RainbowEnabled: 0
+    - _RainbowIntensity: 0.3
+    - _RainbowRadius: 1.2
+    - _RainbowSaturation: 0.7
+    - _RainbowWaveScale: 3
+    - _RainbowWaveSpeed: 1.5
     - _RandomOffset: 0
     - _RimBrightness: 0.83
     - _RimPower: 0.1
@@ -119,6 +126,7 @@ Material:
     - _HoloColor: {r: 0, g: 0.7, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainTint: {r: 1, g: 0, b: 0, a: 0}
+    - _MousePos: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0.35730076, b: 1, a: 1}
     - _ScanlineData: {r: 2.65, g: 12.17, b: 15.76, a: 1.69}
     - _TextureTint: {r: 1, g: 1, b: 1, a: 1}

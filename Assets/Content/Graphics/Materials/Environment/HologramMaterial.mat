@@ -56,10 +56,12 @@ Material:
     - _BandSpeed: 54.2
     - _Bias: 1.24
     - _Brightness: 11.75
+    - _BrightnessToAlpha: 1
     - _ColorGlitchAmount: 0.8
     - _ColorGlitchOffset: 0.05
     - _ColorMask: 49.3
     - _Contrast: 1
+    - _CullMode: 2
     - _DissolveAmount: 0
     - _DissolveEdge: 0.1
     - _ExternalGlitchActive: 0
@@ -77,6 +79,13 @@ Material:
     - _MinAlpha: 1
     - _MinimumAlpha: 0.99
     - _Noise: 1
+    - _RainbowDistortion: 0.5
+    - _RainbowEnabled: 0
+    - _RainbowIntensity: 0.3
+    - _RainbowRadius: 1.2
+    - _RainbowSaturation: 0.7
+    - _RainbowWaveScale: 3
+    - _RainbowWaveSpeed: 1.5
     - _RandomOffset: 0
     - _RimBrightness: 0.83
     - _RimPower: 0.1
@@ -101,6 +110,7 @@ Material:
     - _StencilOp: 2.16
     - _StencilReadMask: 294.5
     - _StencilWriteMask: 256.86
+    - _TextureInfluence: 0
     - _UseUIAlphaClip: 1
     - _VertexGlitchAmount: 0.45
     - _VerticalFade: 1
@@ -108,6 +118,7 @@ Material:
     - _VignetteInverseScale: 2.57
     - _VoxelBlend: 0.4
     - _VoxelSize: 0.04
+    - _ZWriteMode: 0
     m_Colors:
     - _Color: {r: 0, g: 0, b: 1, a: 1}
     - _Direction: {r: 0, g: 1, b: 2.68, a: 0}
@@ -115,7 +126,9 @@ Material:
     - _HoloColor: {r: 0, g: 0.7, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainTint: {r: 0.08235294, g: 0.44705883, b: 0.69803923, a: 1}
+    - _MousePos: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0.35730076, b: 1, a: 1}
     - _ScanlineData: {r: 2.65, g: 12.17, b: 15.76, a: 1.69}
+    - _TextureTint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
